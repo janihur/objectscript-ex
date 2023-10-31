@@ -1,6 +1,7 @@
 Include OSEX
 
 /// XSLT2 examples.
+/// See: https://docs.intersystems.com/latest/csp/docbook/DocBook.UI.Page.cls?KEY=GXML_xslt
 Class OSEX.XSLT2 Extends %RegisteredObject
 {
 
