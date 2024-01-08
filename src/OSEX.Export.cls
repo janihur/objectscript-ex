@@ -27,6 +27,12 @@ ClassMethod ExportClasses(regex As %String, outDir As %String) [ Final ]
 	}
 }
 
+/// Import all class files recursively.
+ClassMethod ImportClasses(dir As %String) [ Final ]
+{
+	do $system.OBJ.ImportDir(dir,,"/compile=1",,1)
+}
+
 /// Imports the class file exported by ExportClasses().
 ClassMethod ImportClass(filename As %String) [ Final ]
 {
