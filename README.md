@@ -5,7 +5,7 @@ Intersystems [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook
 
 Import all code in `<DIR>` recursively:
 ```
-NAMESPACE>do $system.OBJ.ImportDir(<DIR>,,"/compile=1",,1)
+NAMESPACE>do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)
 ```
 
 ## Export
