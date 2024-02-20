@@ -1,5 +1,18 @@
 # objectscript-ex
-Intersystems [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
+InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
+
+## `OSEX.IOP.Jokes`
+
+Interoperability (IOP) production outbound HTTP REST example that uses different humorous APIs.
+
+Relevant InterSystems documentation:
+* [Introduction to Developing Productions](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EGDV_intro)
+* [Creating REST Operations in Productions](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EREST_operation)
+
+The production is triggered with external ObjectScript package `Runner`:
+```
+NAMESPACE>set status = ##class(OSEX.IOP.Jokes.Runner).Run("simpsons")
+```
 
 ## Import
 
