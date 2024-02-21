@@ -8,23 +8,32 @@ Method getJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output respo
 	#dim status as %Status = $$$OK
 	
 	try {
-		#dim httpResponse as %Net.HttpResponse = $$$NULLOREF
-		set status = ..Adapter.Get(.httpResponse)
+		#dim responseDynA as %DynamicArray = []
+	
+		#dim count as %Integer
+		for count=1:1:request.Amount {
+			#dim httpResponse as %Net.HttpResponse = $$$NULLOREF
+			set status = ..Adapter.Get(.httpResponse)
 		
-		$$$TRACE("(status """_$$$StatusDisplayString(status)_""")")
+			$$$TRACE("((count "_count_")(status """_$$$StatusDisplayString(status)_"""))")
 		
-		If ($$$ISERR(status) && $isobject(httpResponse) && $isobject(httpResponse.Data) && httpResponse.Data.Size) {
-        	set status = $$$ERROR($$$EnsErrGeneral,$$$StatusDisplayString(status)_":"_httpResponse.Data.Read())
-      	}
+			If ($$$ISERR(status) && $isobject(httpResponse) && $isobject(httpResponse.Data) && httpResponse.Data.Size) {
+        		set status = $$$ERROR($$$EnsErrGeneral,$$$StatusDisplayString(status)_":"_httpResponse.Data.Read())
+      		}
       	
-      	quit:$$$ISERR(status)
+      		quit:$$$ISERR(status)
       	
-      	if ($isobject(httpResponse)) {
-	      	$$$TRACE(..httpResponseToString(httpResponse))
-	    	  	
-	      	set response = ##class(OSEX.IOP.Jokes.Messages.OperatingResponse).%New()
-	      	set response.Joke = ..readResponseData(httpResponse)
-      	}
+      		if ($isobject(httpResponse)) {
+	      		$$$TRACE("((count "_count_")"_..httpResponseToString(httpResponse)_")")
+	    	  	do responseDynA.%Push({}.%FromJSON(..readResponseData(httpResponse)))
+	      		//set response = ##class(OSEX.IOP.Jokes.Messages.OperatingResponse).%New()
+	      		//set response.Joke = ..readResponseData(httpResponse)
+      		}
+		}
+
+		set response = ##class(OSEX.IOP.Jokes.Messages.OperatingResponse).%New()
+	    set response.Joke = responseDynA.%ToJSON()
+		
 	} catch {
 		set status = $$$SystemError
 	}

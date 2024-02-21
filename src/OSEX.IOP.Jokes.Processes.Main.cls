@@ -14,13 +14,15 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 	set status = ..validateAmount(pRequest.Amount)
 	return:$$$ISERR(status) status
 	
-	// TODO generalize dispatch && response processing
-	
 	#dim opRequest = ##class(OSEX.IOP.Jokes.Messages.OperatingRequest).%New()
 	#dim opResponse as OSEX.IOP.Jokes.Messages.OperatingResponse = $$$NULLOREF
 	
-	#dim opResponseDynO as %DynamicObject = $$$NULLOREF
-	#dim responseDynO as %DynamicObject = $$$NULLOREF
+	#dim opResponseDynA as %DynamicArray = $$$NULLOREF
+	#dim responseDynO as %DynamicObject = { "jokes": [] }
+
+	#dim iter as %Iterator.Array = $$$NULLOREF
+	#dim index as %Integer = 0
+	#dim object as %DynamicObject = $$$NULLOREF
 	
 	if (pRequest.Family = "simpsons") {
 		set opRequest.Amount = pRequest.Amount
@@ -28,8 +30,11 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.Simpsons",opRequest,.opResponse)
 		
 		if ('$$$ISERR(status) && $isobject(opResponse)) {
-			set opResponseDynO = {}.%FromJSON(opResponse.Joke)
-			set responseDynO = { "family": (pRequest.Family), "text": (opResponseDynO."0".quote) }
+			set opResponseDynA = [].%FromJSON(opResponse.Joke)
+			set iter = opResponseDynA.%GetIterator()
+			while(iter.%GetNext(.index,.object)) {
+				do responseDynO.jokes.%Push({ "family": (pRequest.Family), "text": (object.quote) })
+			}
 			set pResponse = ##class(OSEX.IOP.Jokes.Messages.ProcessingResponse).%New()
 			set pResponse.Joke = responseDynO.%ToJSON()
 		}
@@ -39,8 +44,11 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.ChuckNorris",opRequest,.opResponse)
 		
 		if ('$$$ISERR(status) && $isobject(opResponse)) {
-			set opResponseDynO = {}.%FromJSON(opResponse.Joke)
-			set responseDynO = { "family": (pRequest.Family), "text": (opResponseDynO.value) }
+			set opResponseDynA = [].%FromJSON(opResponse.Joke)
+			set iter = opResponseDynA.%GetIterator()
+			while(iter.%GetNext(.index,.object)) {
+				do responseDynO.jokes.%Push({ "family": (pRequest.Family), "text": (object.value) })
+			}
 			set pResponse = ##class(OSEX.IOP.Jokes.Messages.ProcessingResponse).%New()
 			set pResponse.Joke = responseDynO.%ToJSON()
 		}

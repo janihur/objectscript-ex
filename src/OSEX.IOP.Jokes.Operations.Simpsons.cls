@@ -8,6 +8,12 @@ Method getJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output respo
 	#dim status as %Status = $$$OK
 	
 	try {
+		if (request.Amount > 1) {
+			set ..Adapter.URL = ..Adapter.URL_"?count="_request.Amount
+		}
+		
+		$$$TRACE("(Adapter.URL """_..Adapter.URL_""")")
+		
 		#dim httpResponse as %Net.HttpResponse = $$$NULLOREF
 		set status = ..Adapter.Get(.httpResponse)
 		
