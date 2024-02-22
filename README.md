@@ -1,9 +1,10 @@
 # objectscript-ex
+
 InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
 
 ## `OSEX.IOP.Jokes`
 
-Interoperability (IOP) production outbound HTTP REST example that uses different humorous APIs.
+[Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production outbound HTTP REST example that uses different humorous APIs.
 
 Relevant InterSystems documentation:
 * [Introduction to Developing Productions](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EGDV_intro)
@@ -13,6 +14,8 @@ The production is triggered with external ObjectScript package `Runner`:
 ```
 NAMESPACE>set status = ##class(OSEX.IOP.Jokes.Runner).Run("simpsons")
 ```
+
+Mermaid [sequence diagram](https://mermaid.js.org/syntax/sequenceDiagram.html): [osex-iop-jokes.svg](osex-iop-jokes.svg)
 
 ## Import
 

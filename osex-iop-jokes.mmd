@@ -1,0 +1,74 @@
+---
+title: OSEX.IOP.Jokes
+---
+sequenceDiagram
+autonumber
+
+actor trigger
+participant runner as OSEX.IOP.Jokes.<br/>Runner
+
+trigger ->> runner: Run(family, amount)
+
+create participant processingrequest as OSEX.IOP.Jokes.<br/>Messages.ProcessingRequest
+runner ->> processingrequest: %New()
+processingrequest -->> runner: processingRequest
+
+note over runner: convert method parameters to processingRequest
+
+create participant service as OSEX.IOP.Jokes.<br/>Services.Main
+runner ->> service: CreateBusinessService()
+service -->> runner: business service
+runner ->> service: ProcessInput(processingRequest, processingResponse)
+
+participant process as OSEX.IOP.Jokes.<br/>Processes.Main
+service ->> process: SendRequestSync(processingRequest, processingResponse)
+
+%% -----------------------------------------------------------------------------
+
+note over process: validate processingRequest properties
+create participant operatingrequest as OSEX.IOP.Jokes.<br/>Messages.OperatingRequest
+process ->> operatingrequest: %New()
+operatingrequest -->> process: operatingRequest
+
+note over process: convert processingRequest<br/>to operatingRequest
+
+%% -----------------------------------------------------------------------------
+
+opt processingRequest.Family is chucknorris
+  note over process: essentially similar to simpsons
+end
+
+%% -----------------------------------------------------------------------------
+
+participant simpsons as OSEX.IOP.Jokes.<br/>Operations.Simpsons
+participant simpsonsapi as thesimpsonsquoteapi.glitch.me
+
+opt processingRequest.Family is simpsons
+  process ->> simpsons: SendRequestSync(operatingRequest, operatingResponse)
+  note over simpsons: convert  operatingRequest to HTTP request parameters
+  simpsons ->> simpsonsapi: GET /quotes
+  simpsonsapi -->> simpsons: %Net.HttpResponse
+  create participant operatingresponse as OSEX.IOP.Jokes.<br/>Messages.OperatingResponse
+  simpsons ->> operatingresponse: %New()
+  operatingresponse -->> simpsons: operatingResponse
+  note over simpsons: convert %Net.HttpResponse to operatingResponse
+  simpsons -->> process: operatingResponse
+  create participant processingresponse as OSEX.IOP.Jokes.<br/>Messages.ProcessingResponse
+  process ->> processingresponse: %New()
+  processingresponse -->> process: processingResponse
+  note over process: convert operatingResponse to processingResponse
+end
+
+%% -----------------------------------------------------------------------------
+
+destroy operatingresponse
+process -x operatingresponse: free
+destroy operatingrequest
+process -x operatingrequest: free
+
+%% -----------------------------------------------------------------------------
+
+process -->> service: processingResponse
+service -->> runner: processingResponse
+runner ->> runner: display processingResponse
+runner -->> trigger: void
