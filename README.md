@@ -17,6 +17,17 @@ NAMESPACE>set status = ##class(OSEX.IOP.Jokes.Runner).Run("simpsons")
 
 Mermaid [sequence diagram](https://mermaid.js.org/syntax/sequenceDiagram.html): [osex-iop-jokes.svg](osex-iop-jokes.svg)
 
+## `OSEX.IOP.UniversalExports`
+
+[Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production outbound HTTP REST example that transfers arbitrary string data from one HTTP API to another one.
+
+Requires `server.py` running in `localhost:8080`.
+
+The production is triggered with external ObjectScript package `Runner`:
+```
+NAMESPACE>set status = ##class(OSEX.IOP.UniversalExports.Runner).Run("kalevala", 10)
+```
+
 ## Import
 
 Import all code in `<DIR>` recursively:
