@@ -3,7 +3,7 @@ Class OSEX.IOP.Jokes.Operations.ChuckNorris Extends EnsLib.REST.Operation
 
 Parameter INVOCATION = "Queue";
 
-Method getJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output response As OSEX.IOP.Jokes.Messages.OperatingResponse) As %Status
+Method GetJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output response As OSEX.IOP.Jokes.Messages.OperatingResponse) As %Status
 {
 	#dim status as %Status = $$$OK
 	
@@ -21,19 +21,17 @@ Method getJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output respo
         		set status = $$$ERROR($$$EnsErrGeneral,$$$StatusDisplayString(status)_":"_httpResponse.Data.Read())
       		}
       	
+      		// TODO do we quit the loop here only? use return instead? will responseDynA leak?
       		quit:$$$ISERR(status)
       	
       		if ($isobject(httpResponse)) {
-	      		$$$TRACE("((count "_count_")"_..httpResponseToString(httpResponse)_")")
-	    	  	do responseDynA.%Push({}.%FromJSON(..readResponseData(httpResponse)))
-	      		//set response = ##class(OSEX.IOP.Jokes.Messages.OperatingResponse).%New()
-	      		//set response.Joke = ..readResponseData(httpResponse)
+	      		$$$TRACE("((count "_count_")"_##class(OSEX.IOP.Jokes.Util).HttpResponseToString(httpResponse)_")")
+	      		do responseDynA.%Push({}.%FromJSON(##class(OSEX.IOP.Jokes.Util).ReadHttpResponseData(httpResponse)))
       		}
 		}
 
 		set response = ##class(OSEX.IOP.Jokes.Messages.OperatingResponse).%New()
-	    set response.Joke = responseDynA.%ToJSON()
-		
+		set response.Joke = responseDynA.%ToJSON()
 	} catch {
 		set status = $$$SystemError
 	}
@@ -41,46 +39,11 @@ Method getJoke(request As OSEX.IOP.Jokes.Messages.OperatingRequest, Output respo
 	return status
 }
 
-ClassMethod httpResponseToString(httpResponse As %Net.HttpResponse) As %String [ Private ]
-{
-	#dim statusCode as %String = "(StatusCode "_httpResponse.StatusCode_")"
-	#dim dataSize as %String = "(Data.Size "_httpResponse.Data.Size_")"
-	#dim data as %String = "(Data TODO)"
-	#dim contentType as %String = "(ContentType """_httpResponse.ContentType_""")"
-	
-	#dim headers as %String = "(Headers ("
-	#dim key as %String = $order(httpResponse.Headers(""))
-	while (key '= "") {
-		#dim value as %String = $get(httpResponse.Headers(key))
-		set headers = headers_"("_key_" """_value_""")"
-		set key = $order(httpResponse.Headers(key))
-	}
-	set headers = headers_"))"
-	
-	return "(HttpResponse ("_headers_statusCode_contentType_dataSize_data_"))"
-}
-
-/// TODO string doesn't read everything
-/// TODO use stream instead
-ClassMethod readResponseData(response As %Net.HttpResponse, maxlen As %Integer = 32656) As %String [ Private ]
-{
-	#dim stringData As %String
-	if ($isobject(response.Data)) {
-		#dim streamData As %Stream = response.Data
-		#dim dummy as %Status = streamData.Rewind()
-		set stringData = streamData.Read(.maxlen)
-	}
-	else {
-		set stringData = $extract(response.Data,0,maxlen)
-	}
-	return stringData
-}
-
 XData MessageMap
 {
 <MapItems>
   <MapItem MessageType="OSEX.IOP.Jokes.Messages.OperatingRequest">
-    <Method>getJoke</Method>
+    <Method>GetJoke</Method>
   </MapItem>
 </MapItems>
 }

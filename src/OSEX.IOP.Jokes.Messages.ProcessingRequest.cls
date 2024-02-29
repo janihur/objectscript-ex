@@ -5,14 +5,6 @@ Property Family As %String(MAXLEN = "");
 
 Property Amount As %Integer;
 
-/*
-Method %OnNew(family As %String, amount As %Integer) As %Status [ Private, ServerOnly = 1 ]
-{
-	set ..Family = family
-    set ..Amount = amount
-    return $$$OK
-}
-*/
 Storage Default
 {
 <Data name="ProcessingRequestDefaultData">

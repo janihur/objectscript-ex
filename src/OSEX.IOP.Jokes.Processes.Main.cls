@@ -24,27 +24,15 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 	#dim index as %Integer = 0
 	#dim object as %DynamicObject = $$$NULLOREF
 	
-	if (pRequest.Family = "simpsons") {
-		set opRequest.Amount = pRequest.Amount
-		
-		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.Simpsons",opRequest,.opResponse)
-		
-		if ('$$$ISERR(status) && $isobject(opResponse)) {
-			set opResponseDynA = [].%FromJSON(opResponse.Joke)
-			set iter = opResponseDynA.%GetIterator()
-			while(iter.%GetNext(.index,.object)) {
-				do responseDynO.jokes.%Push({ "family": (pRequest.Family), "text": (object.quote) })
-			}
-			set pResponse = ##class(OSEX.IOP.Jokes.Messages.ProcessingResponse).%New()
-			set pResponse.Joke = responseDynO.%ToJSON()
-		}
-	} elseif (pRequest.Family = "chucknorris") {
+	// ------------------------------------------------------------------------
+	if (pRequest.Family = "chucknorris") {
 		set opRequest.Amount = pRequest.Amount
 		
 		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.ChuckNorris",opRequest,.opResponse)
 		
 		if ('$$$ISERR(status) && $isobject(opResponse)) {
 			set opResponseDynA = [].%FromJSON(opResponse.Joke)
+			
 			set iter = opResponseDynA.%GetIterator()
 			while(iter.%GetNext(.index,.object)) {
 				do responseDynO.jokes.%Push({ "family": (pRequest.Family), "text": (object.value) })
@@ -52,6 +40,23 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 			set pResponse = ##class(OSEX.IOP.Jokes.Messages.ProcessingResponse).%New()
 			set pResponse.Joke = responseDynO.%ToJSON()
 		}
+	// ------------------------------------------------------------------------
+	} elseif (pRequest.Family = "simpsons") {
+		set opRequest.Amount = pRequest.Amount
+		
+		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.Simpsons",opRequest,.opResponse)
+		
+		if ('$$$ISERR(status) && $isobject(opResponse)) {
+			set opResponseDynA = [].%FromJSON(opResponse.Joke)
+			
+			set iter = opResponseDynA.%GetIterator()
+			while(iter.%GetNext(.index,.object)) {
+				do responseDynO.jokes.%Push({ "family": (pRequest.Family), "text": (object.quote) })
+			}
+			set pResponse = ##class(OSEX.IOP.Jokes.Messages.ProcessingResponse).%New()
+			set pResponse.Joke = responseDynO.%ToJSON()
+		}
+	// ------------------------------------------------------------------------
 	} else {
 		// unimplemented on purpose
 		#dim error = ##class(OSEX.IOP.Jokes.Error).Create("Not implemented yet. Family: "_pRequest.Family)
@@ -76,8 +81,8 @@ Method validateAmount(amount As %Integer) As %Status [ Private ]
 
 Method validateFamily(family As %String) As %Status [ Private ]
 {
-	if ((family '= "baconipsum") && (family '= "chucknorris") && (family '= "simpsons")) {
-		#dim details as %String = "Invalid family: "_family_". Valid families: ""baconipsum"", ""chucknorris"", ""simpsons""."
+	if ((family '= "baconipsum") && (family '= "chucknorris") && (family '= "kalevala") && (family '= "simpsons")) {
+		#dim details as %String = "Invalid family: "_family_". Valid families: ""baconipsum"", ""chucknorris"", ""kalevala"", ""simpsons""."
 		#dim error = ##class(OSEX.IOP.Jokes.Error).Create(details)
 		$$$LOGERROR(error.ExportToJson())
 		return error.ExportToStatus()

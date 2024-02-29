@@ -3,13 +3,6 @@ Class OSEX.IOP.Jokes.Messages.ProcessingResponse Extends Ens.Response
 
 Property Joke As %String(MAXLEN = "");
 
-/*
-Method %OnNew(joke As %String) As %Status [ Private, ServerOnly = 1 ]
-{
-	set ..Joke = joke
-    return $$$OK
-}
-*/
 Storage Default
 {
 <Data name="ProcessingResponseDefaultData">
