@@ -9,9 +9,39 @@ ClassMethod Ex1()
 	set list1 = $listbuild(a1,a2)
 	
 	zwrite list1
+	
+	for i=1:1:$listlength(list1) {
+		write $list(list1,i),!
+	}
 }
 
 ClassMethod Ex2()
+{
+	#dim fromList as %String = "alpha,bravo,charlie,delta,echo,foxtrot"
+	
+	#dim toList = ##class(%ListOfDataTypes).%New()
+	
+	#dim value as %String = ""
+	
+	#dim i as %Integer
+	for i=1:1:$length(fromList,",") {
+		set value = $piece(fromList,",",i)
+    	write "#"_i_": "_value, !
+		do toList.Insert(value)
+	}
+	
+	zw toList
+	
+	#dim key = ""
+	set value = toList.GetNext(.key)
+	while (key '= "") {
+		write value,!
+		set value = toList.GetNext(.key)
+	}
+}
+
+/// for-loop syntax
+ClassMethod Ex3()
 {
 	#dim index as %Integer = 0
 	#dim start as %Integer = 1

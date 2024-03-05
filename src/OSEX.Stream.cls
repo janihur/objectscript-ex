@@ -111,5 +111,14 @@ ClassMethod Ex2()
  	// ------------------------------------------------------------------------
 }
 
+ClassMethod Ex3(path As %String)
+{
+	#dim status as %Status = $$$OK
+	#dim instream = ##class(%Stream.FileBinary).%New()
+	$$$THROWONERROR(status,instream.LinkToFile(path))
+	zwrite status
+	zwrite instream
+}
+
 }
 
