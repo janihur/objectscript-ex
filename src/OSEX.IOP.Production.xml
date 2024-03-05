@@ -3,7 +3,7 @@
 <Class name="OSEX.IOP.Production">
 <ProcedureBlock>0</ProcedureBlock>
 <Super>Ens.Production</Super>
-<TimeChanged>66899,63731.159116283</TimeChanged>
+<TimeChanged>66903,34862.781472418</TimeChanged>
 <TimeCreated>66883,58493.077275387</TimeCreated>
 
 <XData name="ProductionDefinition">
@@ -30,14 +30,13 @@
   <Item Name="UniversalExports.Processes.Main" Category="" ClassName="OSEX.IOP.UniversalExports.Processes.Main" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
   </Item>
   <Item Name="UniversalExports.Operations.BookExport" Category="" ClassName="OSEX.IOP.UniversalExports.Operations.BookExport" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
-    <Setting Target="Adapter" Name="HTTPPort">8080</Setting>
-    <Setting Target="Adapter" Name="HTTPServer">localhost</Setting>
-    <Setting Target="Adapter" Name="URL">/export</Setting>
+    <Setting Target="Adapter" Name="RegistryID">Export Service||OSEX.IOP.UniversalExports||1</Setting>
   </Item>
-  <Item Name="UniversalExports.Operations.BookImport" Category="" ClassName="OSEX.IOP.UniversalExports.Operations.BookImport" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
-    <Setting Target="Adapter" Name="HTTPPort">8080</Setting>
-    <Setting Target="Adapter" Name="HTTPServer">localhost</Setting>
-    <Setting Target="Adapter" Name="URL">/import</Setting>
+  <Item Name="UniversalExports.Operations.BookImport1" Category="" ClassName="OSEX.IOP.UniversalExports.Operations.BookImport" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Adapter" Name="RegistryID">Import Service 1||OSEX.IOP.UniversalExports||1</Setting>
+  </Item>
+  <Item Name="UniversalExports.Operations.BookImport2" Category="" ClassName="OSEX.IOP.UniversalExports.Operations.BookImport" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Adapter" Name="RegistryID">Import Service 2||OSEX.IOP.UniversalExports||1</Setting>
   </Item>
 </Production>
 ]]></Data>

@@ -1,0 +1,25 @@
+{
+    "domain": "OSEX.IOP.UniversalExports",
+    "services": [
+        {
+            "name": "Export Service",
+            "endpoint": "http://localhost:8080/export"
+        },
+        {
+            "name": "Import Service 1",
+            "endpoint": "http://localhost:8080/import",
+            "attributes": {
+                "ServiceType": "BookImport",
+                "BusinessOperation": "UniversalExports.Operations.BookImport1"
+            }
+        },
+        {
+            "name": "Import Service 2",
+            "endpoint": "http://localhost:8081/import",
+            "attributes": {
+                "ServiceType": "BookImport",
+                "BusinessOperation": "UniversalExports.Operations.BookImport2"
+            }
+        }
+    ]
+}

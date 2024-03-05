@@ -1,6 +1,90 @@
 Class OSEX.IOP.UniversalExports.Util Extends %RegisteredObject
 {
 
+ClassMethod configureService(domain As %String, serviceJson As %DynamicObject) As %Status [ Private ]
+{
+	#dim status as %Status = $$$OK
+	
+	// service ----------------------------------------------------------------
+	
+	#dim service = ##class(%ZEN.proxyObject).%New()
+	set service.Name = serviceJson.name
+	set service.Domain = domain
+	set service.Version = "1"
+	set service.Endpoint = serviceJson.endpoint
+	set service.Protocol = "REST"
+	set service.ResponseStyle = "Sync"
+	set service.Stage = "Live"
+	
+	set status = ##class(Ens.ServiceRegistry.External.API).SaveService(service)
+  	if ($$$ISERR(status)) {
+		// do $system.Status.DisplayError(status)
+		return status
+	}
+	
+	// attributes -------------------------------------------------------------
+	
+	#dim attributesJson as %DynamicObject = serviceJson.attributes
+	
+	if (attributesJson '= $$$NULLOREF) {
+		#dim serviceId as %String = service.Name_"||"_service.Domain_"||"_service.Version
+		#dim attributesIter as %Iterator.Object = attributesJson.%GetIterator()
+		#dim key as %String = ""
+		#dim value as %String = ""
+		while (attributesIter.%GetNext(.key,.value)) {
+			#dim attribute = ##class(%ZEN.proxyObject).%New()
+			set attribute.Service = serviceId
+			set attribute.Name = key
+			set attribute.Value = value
+			
+			set status = ##class(Ens.ServiceRegistry.External.API).SaveAttribute(attribute)
+		  	if ($$$ISERR(status)) {
+				// do $system.Status.DisplayError(status)
+				return status
+			}
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	return status
+}
+
+/// external-service registry configuration from json configuration file
+/// configuration file contains only values that can change
+/// fixed values are hardcoded here
+/// doesn't delete services/attributes
+ClassMethod Configure(path As %String) As %Status
+{
+	#dim status as %Status = $$$OK
+	
+	#dim configFileStream as %Stream = ##class(%Stream.FileCharacter).%New()
+	
+  	set status = configFileStream.LinkToFile(path)
+  	if ($$$ISERR(status)) {
+		// do $system.Status.DisplayError(status)
+		return status
+	}
+  	// do configFileStream.OutputToDevice()
+	
+	#dim configJson as %DynamicObject = {}.%FromJSON(configFileStream)
+	#dim servicesJson as %DynamicArray = configJson.services
+	#dim servicesIter as %Iterator.Array = servicesJson.%GetIterator()
+	
+	#dim key as %Integer = 0
+	#dim value as %DynamicObject = $$$NULLOREF
+	
+	while (servicesIter.%GetNext(.key,.value)) {
+		set status = ..configureService(configJson.domain, value)
+	  	if ($$$ISERR(status)) {
+			// do $system.Status.DisplayError(status)
+			return status
+		}
+	}
+	
+	return status
+}
+
 ClassMethod HttpResponseToString(httpResponse As %Net.HttpResponse, showData As %Boolean = 0) As %String
 {
 	#dim isDataObject as %Boolean = $isobject(httpResponse.Data)
