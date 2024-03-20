@@ -21,5 +21,16 @@ ClassMethod Ex2()
 	zw $data(^%qStream)
 }
 
+ClassMethod Ex3()
+{
+	set ^OSEX.IOP.Jokes("foo", 1) = "foo 1"
+	set ^OSEX.IOP.Jokes("foo", 2) = "foo 2"
+	set ^OSEX.IOP.Jokes("bar", 1) = "bar 1"
+	set ^OSEX.IOP.Jokes("bar", 2) = "bar 2"
+	
+	zw $data(^OSEX.IOP.Jokes)
+	zw ^OSEX.IOP.Jokes
+}
+
 }
 

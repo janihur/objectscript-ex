@@ -104,5 +104,33 @@ ClassMethod GetStringFromStatus(ByRef statusDetails As %String) As %String [ Pri
 	return ""
 }
 
+ClassMethod Ex3()
+{
+	// data part --------------------------------------------------------------
+	#dim d // md
+	set d("A") = "OPERATED_OK"
+	set d("B") = "OPERATED_OK"
+	set d("C") = "OPERATED_ERROR"
+	set d("D") = "NOT_OPERATED_YET"
+	set d("E") = "NOT_OPERATED_YET"
+
+	// convert to string ------------------------------------------------------
+	write ..MdToString(.d),!
+}
+
+ClassMethod MdToString(ByRef md) As %String [ Private ]
+{
+	#dim accu as %String = ""
+
+	#dim key as %String = $order(md(""))
+	while (key '= "" ) {
+		#dim value as %String = $get(md(key))
+		set accu=accu_"("_key_" "_value_")"
+		set key = $order(md(key))
+	}
+
+	return accu
+}
+
 }
 
