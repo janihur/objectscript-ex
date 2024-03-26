@@ -21,5 +21,30 @@ ClassMethod Ex1()
 	zwrite json2
 }
 
+ClassMethod Ex2()
+{
+	#dim json as %DynamicObject = { "list": ["foo","bar"] }
+	
+	#dim list as %DynamicArray = json.list
+
+	if ($isobject(list)) {
+		write "list exists",!
+	} else {
+		write "no list",!
+		return
+	}
+	
+	#dim iter as %Iterator.Array = list.%GetIterator()
+	
+	zw iter
+	
+	#dim index as %Integer
+	#dim value as %String = ""
+	while (iter.%GetNext(.index, .value)) {
+		zw index
+		zw value
+	}
+}
+
 }
 

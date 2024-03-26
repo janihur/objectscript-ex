@@ -60,7 +60,7 @@ ClassMethod Ex2()
 	// ------------------------------------------------------------------------
 	// find production item by name
 	
-	#dim item as %Ens.Config.Item
+	#dim item as Ens.Config.Item
 	set item = production.FindItemByConfigName(..#CONFIGITEM,.status,0)
 	if ($$$ISERR(status)) {
 		do $system.Status.DisplayError(status)
