@@ -120,5 +120,117 @@ ClassMethod Ex3(path As %String)
 	zwrite instream
 }
 
+/// expects the following utf-8 encoded input file in:
+/// 
+/// char unicode utf8   cp1252
+/// Æ    U+00c6  0xc386 0xc6
+/// Ç    U+00c7  0xc387 0xc7
+/// Ø    U+00d8  0xc398 0xd8
+/// 
+/// $ cat in; echo; xxd in
+/// loremÆÇØ
+/// 00000000: 6c6f 7265 6dc3 86c3 87c3 98              lorem......
+ClassMethod Ex4()
+{
+ 	#dim status as %Status
+
+	// ------------------------------------------------------------------------
+	
+	#dim in = ##class(%Stream.FileCharacter).%New()
+	set in.TranslateTable = "UTF8"
+	set status = in.LinkToFile("/tmp/in")
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+
+	// ------------------------------------------------------------------------
+	
+	#dim out = ##class(%Stream.FileCharacter).%New()
+	set out.TranslateTable = "CP1252"
+	set status = out.LinkToFile("/tmp/out")
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	do out.CopyFrom(in)
+	
+	// ------------------------------------------------------------------------
+	
+  	set status = out.%Save()
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+}
+
+/// expects the following utf-8 encoded input file in2:
+/// 
+/// char unicode utf8   cp1252
+/// Æ    U+00c6  0xc386 0xc6
+/// Ç    U+00c7  0xc387 0xc7
+/// Ø    U+00d8  0xc398 0xd8
+/// 
+/// $ cat in2; echo; xxd in2
+/// {"a":"loremÆÇØ"}
+/// 00000000: 7b22 6122 3a22 6c6f 7265 6dc3 86c3 87c3  {"a":"lorem.....
+/// 00000010: 9822 7d                                  ."}
+ClassMethod Ex5()
+{
+ 	#dim status as %Status
+
+	// ------------------------------------------------------------------------
+	
+	#dim in = ##class(%Stream.FileCharacter).%New()
+	set in.TranslateTable = "UTF8"
+	set status = in.LinkToFile("/tmp/in2")
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+
+	// ------------------------------------------------------------------------
+	
+  	#dim chunkSize as %Integer = 32000 // arbitrary long enough value
+	#dim chunk as %String = in.Read(.chunkSize)
+	zzdump chunk
+
+	// ------------------------------------------------------------------------
+	
+	#dim obj as %DynamicObject = {}.%FromJSON(in)
+	zzdump obj.a
+	
+	// ------------------------------------------------------------------------
+	
+	#dim out = ##class(%Stream.FileCharacter).%New()
+	set out.TranslateTable = "CP1252"
+	set status = out.LinkToFile("/tmp/out2")
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	#dim line as %String = ""
+	
+	set line = "a|b|c"
+	set status = out.WriteLine(line)
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+
+	set line = obj.a_"|"_obj.a_"|"_obj.a
+	set status = out.WriteLine(line)
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+	
+	// ------------------------------------------------------------------------
+
+  	set status = out.%Save()
+  	if ($$$ISERR(status)) {
+		do $system.Status.DisplayError(status)
+	}
+}
+
 }
 
