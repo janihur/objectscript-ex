@@ -2,6 +2,33 @@
 
 InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
 
+## `OSEX.IOP.FileExport`
+
+[Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production file operation (`EnsLib.File.PassthroughOperation`) example.
+
+Assumes the input file encoding is UTF-8 and writes the the content to `/tmp/out` using file name specifier `%f_%Q%!+(_a)` with CP-1252 encoding.
+
+Input file example:
+```
+This is foo example #1.
+Stranger things: ÆÇØ.
+```
+
+Expected output file hex dump:
+```
+$ xxd /tmp/out/<FILE>
+00000000: 5468 6973 2069 7320 666f 6f20 6578 616d  This is foo exam
+00000010: 706c 6520 2331 2e0a 5374 7261 6e67 6572  ple #1..Stranger
+00000020: 2074 6869 6e67 733a 20c6 c7d8 2e0a        things: .....
+```
+
+Note the unix EOL (`0a`).
+
+The production is triggered with external ObjectScript package `Runner`:
+```
+NAMESPACE>zw ##class(OSEX.IOP.FileExport.Runner).Run("/tmp/foo")
+```
+
 ## `OSEX.IOP.Jokes`
 
 [Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production outbound HTTP REST example that uses different humorous APIs.

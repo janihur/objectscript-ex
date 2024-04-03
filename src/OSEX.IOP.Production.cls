@@ -6,6 +6,15 @@ XData ProductionDefinition
 <Production Name="OSEX.IOP.Production" TestingEnabled="true" LogGeneralTraceEvents="true">
   <Description></Description>
   <ActorPoolSize>1</ActorPoolSize>
+  <Item Name="FileExport.Services.Main" Category="FileExport" ClassName="OSEX.IOP.FileExport.Services.Main" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+  </Item>
+  <Item Name="FileExport.Processes.Main" Category="FileExport" ClassName="OSEX.IOP.FileExport.Processes.Main" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+  </Item>
+  <Item Name="FileExport.Operations.Export" Category="FileExport" ClassName="EnsLib.File.PassthroughOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Adapter" Name="FilePath">/tmp/out</Setting>
+    <Setting Target="Adapter" Name="Charset">cp1252</Setting>
+    <Setting Target="Host" Name="Filename">%f_%Q%!+(_a)</Setting>
+  </Item>
   <Item Name="Jokes.Services.Main" Category="Jokes" ClassName="OSEX.IOP.Jokes.Services.Main" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
   </Item>
   <Item Name="Jokes.Processes.Main" Category="Jokes" ClassName="OSEX.IOP.Jokes.Processes.Main" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
