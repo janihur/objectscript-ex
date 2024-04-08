@@ -13,12 +13,11 @@ Method OnRequest(pRequest As OSEX.IOP.FileExport.Messages.ExportRequest, Output 
 	return:$$$ISERR(status) status
 	
 	#dim exportRequest = ##class(Ens.StreamContainer).%New()
-	// TODO how to set the "original filename" so that %f specifier has 
-	// effect in EnsLib.File.PassThroiughOperation ?
-	// set exportRequest.OriginalFilename = "foo1"
-	// do exportRequest.SetAttributes("OriginalFilename=foo1,Filename=foo2")
 	set status = exportRequest.StreamSet(in)
 	return:$$$ISERR(status) status
+	// has to be after StreamSet() which sets OriginalFilename to ""
+	// this is the property that controls %f specifier
+	set exportRequest.OriginalFilename = "foo"
 	
 	#dim exportResponse as %Persistent = $$$NULLOREF
 	
