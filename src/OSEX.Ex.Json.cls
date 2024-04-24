@@ -46,5 +46,15 @@ ClassMethod Ex2()
 	}
 }
 
+ClassMethod Ex3()
+{
+	set iter = [ { "first": "one" }, { "second": "two" } ].%GetIterator()
+	while (iter.%GetNext(.key, .value)) {
+		#dim iter2 as %Iterator.Object = value.%GetIterator()
+		while (iter2.%GetNext(.key, .value)) {
+			write "((key """,key,""")(value """,value,"""))",!
+		}
+	}
 }
 
+}
