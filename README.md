@@ -2,6 +2,41 @@
 
 InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
 
+## Code Management
+
+Code management operations are part of [`%SYSTEM.OBJ`](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25SYSTEM.OBJ) class.
+
+|Operation|Command|Details|
+|---------|-------|-------|
+|Import   |`do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)`|Import all code in `<DIR>` directory recursively to server.|
+|Export   |`do ##class(OSEX.Export).ExportClasses("<REGEX>","<DIR>")`|Export all class code to `<DIR>` directory from server where `<REGEX>` have to match the whole class name. E.g. all classes of `OSEX`top level package: `OSEX\..*`.|
+|Delete   |`do $system.OBJ.DeletePackage("<PACKAGE>")`|Delete all classes of the specified `<PACKAGE>` from server.|
+
+## How to Create Namespace
+
+In Management Portal:
+```
+System Administration
+ > Configuration
+  > System Configuration
+   > Namespaces
+    > press button: Create New Namespace
+```
+
+Programmatically see [Config.Namespaces](https://docs.intersystems.com/iris20241/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&PRIVATE=1&CLASSNAME=Config.Namespaces) class.
+
+See also [Namespaces and Databases](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GORIENT_enviro).
+
+## Running Unit Tests
+
+[Unit Testing with %UnitTest](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_WhatIsPercentUnitTest).
+
+```
+NAMESPACE>set ^UnitTestRoot = "<REPO_ROOT_DIR>/objectscript-ex/src"
+NAMESPACE>do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
+NAMESPACE>do ##class(%UnitTest.Manager).RunTest(":codeGolf.unitTest.ChineseZodiac", "/nodelete")
+```
+
 ## `OSEX.IOP.FileExport`
 
 [Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production file operation (`EnsLib.File.PassthroughOperation`) example.
@@ -79,27 +114,4 @@ The content and size of the file is not important as long as the size is "big en
 The production is triggered with external ObjectScript package `Runner`:
 ```
 NAMESPACE>zw ##class(OSEX.IOP.UniversalExports.Runner).Run("kalevala", 10)
-```
-
-## Import
-
-Import all code in `<DIR>` recursively:
-```
-NAMESPACE>do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)
-```
-
-## Export
-
-```
-NAMESPACE>do ##class(OSEX.Export).ExportClasses("OSEX\..*","/output/path")
-```
-
-## Running Unit Tests
-
-[Unit Testing with %UnitTest](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_WhatIsPercentUnitTest).
-
-```
-NAMESPACE>set ^UnitTestRoot = "<REPO_ROOT_DIR>/objectscript-ex/src"
-NAMESPACE>do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
-NAMESPACE>do ##class(%UnitTest.Manager).RunTest(":codeGolf.unitTest.ChineseZodiac", "/nodelete")
 ```
