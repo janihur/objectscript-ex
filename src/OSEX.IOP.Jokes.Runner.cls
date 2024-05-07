@@ -6,7 +6,7 @@ ClassMethod Run(family As %String = "simpsons", amount As %Integer = 1) As %Stat
 	#dim status as %Status
 
 	#dim service as OSEX.IOP.Jokes.Services.Main
-	$$$THROWONERROR(status, ##class(Ens.Director).CreateBusinessService("OSEX.IOP.Jokes.Services.Main",.service))
+	$$$THROWONERROR(status, ##class(Ens.Director).CreateBusinessService("Jokes.Services.Main",.service))
 	
 	#dim request = ##class(OSEX.IOP.Jokes.Messages.ProcessingRequest).%New()
 	set request.Family = family
@@ -37,4 +37,3 @@ ClassMethod Run(family As %String = "simpsons", amount As %Integer = 1) As %Stat
 }
 
 }
-

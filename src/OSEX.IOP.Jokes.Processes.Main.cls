@@ -28,7 +28,7 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 	if (pRequest.Family = "chucknorris") {
 		set opRequest.Amount = pRequest.Amount
 		
-		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.ChuckNorris",opRequest,.opResponse)
+		set status = ..SendRequestSync("Jokes.Operations.ChuckNorris",opRequest,.opResponse)
 		
 		if ('$$$ISERR(status) && $isobject(opResponse)) {
 			set opResponseDynA = [].%FromJSON(opResponse.Joke)
@@ -44,7 +44,7 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 	} elseif (pRequest.Family = "simpsons") {
 		set opRequest.Amount = pRequest.Amount
 		
-		set status = ..SendRequestSync("OSEX.IOP.Jokes.Operations.Simpsons",opRequest,.opResponse)
+		set status = ..SendRequestSync("Jokes.Operations.Simpsons",opRequest,.opResponse)
 		
 		if ('$$$ISERR(status) && $isobject(opResponse)) {
 			set opResponseDynA = [].%FromJSON(opResponse.Joke)
@@ -97,4 +97,3 @@ Storage Default
 }
 
 }
-
