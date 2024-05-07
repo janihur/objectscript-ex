@@ -2,7 +2,7 @@
 
 InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
 
-## Code Management
+## ObjectScript Code Management
 
 Code management operations are part of [`%SYSTEM.OBJ`](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25SYSTEM.OBJ) class.
 
@@ -26,6 +26,14 @@ System Administration
 Programmatically see [Config.Namespaces](https://docs.intersystems.com/iris20241/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&PRIVATE=1&CLASSNAME=Config.Namespaces) class.
 
 See also [Namespaces and Databases](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GORIENT_enviro).
+
+## IOP Production Management
+
+|Operation|Command|Details|
+|---------|-------|-------|
+|Start    |`do ##class(Ens.Director).StartProduction("OSEX.IOP.Production")`||
+|Remove   |`do ##class(Ens.Director).DeleteProduction("OSEXPKG.FoundationProduction")`||
+|Restart  |`do ##class(Ens.Director).RestartProduction()`||
 
 ## Running Unit Tests
 
