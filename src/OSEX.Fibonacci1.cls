@@ -1,6 +1,6 @@
 /// Different ways to calculate the Fibonacci sequence.
 /// https://en.wikipedia.org/wiki/Fibonacci_sequence
-Class OSEX.Fibonacci Extends %RegisteredObject
+Class OSEX.Fibonacci1
 {
 
 /// Calculate the Fibonacci sequence using a for loop.
