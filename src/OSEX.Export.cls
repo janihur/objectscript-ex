@@ -43,13 +43,12 @@ ClassMethod ImportClass(filename As %String) [ Final ]
 /// name should not contain the .inc postfix.
 ClassMethod ExportInclude(name As %String, outDir As %String) [ Final ]
 {
-	set items = name_".inc"
+	set item = name_".inc"
 	set filename = outDir_"/"_name_".inc"
-	set status = $system.OBJ.Export(items, filename)
+	set status = $system.OBJ.ExportUDL(item, filename)
 	if ($$$ISERR(status)) {
 		do $system.Status.DisplayError(status)
 	}
 }
 
 }
-
