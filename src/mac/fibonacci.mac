@@ -1,0 +1,31 @@
+ROUTINE fibonacci
+/// usage:
+/// NAMESPACE>do fibonacci1^fibonacci(10)
+fibonacci1(n)
+    set a = 0
+    set b = 1
+
+    for i = 0:1:n-1
+    {
+        if (i < 2) { 
+            write i,!
+            continue
+        }
+        set c = a + b
+        set a = b
+        set b = c
+
+        write c,!
+    }
+    quit
+
+/// code golfed in mumps style
+fibonacci2(n)
+ s a=0,b=1
+ f i = 0:1:n-1 d
+ . i i < 2 d
+ . . w i,!
+ . e  d
+ . . s c=a+b,a=b,b=c
+ . . w c,!
+ q

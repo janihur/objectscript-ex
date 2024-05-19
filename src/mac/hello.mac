@@ -1,0 +1,12 @@
+ROUTINE hello
+/// hello world as a routine
+
+/// usage: do hello1^hello
+hello1()
+    write "Hello, World!",!
+    quit
+
+/// usage: do hello2^hello("My Name")
+hello2(name)
+    write "Hello, ",name,"!",!
+    quit
