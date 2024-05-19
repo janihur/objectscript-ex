@@ -63,6 +63,25 @@ Method OnRequest(pRequest As OSEX.IOP.Jokes.Messages.ProcessingRequest, Output p
 		$$$LOGERROR(error.ExportToJson())
 		set status = error.ExportToStatus()
 	}
+
+	// ------------------------------------------------------------------------
+	// get data of the original request
+	// not used but in demonstration purposes
+
+	try {
+		$$$TRACE("(%SessionId "_..%SessionId_")")
+		#dim processingRequest as OSEX.IOP.Jokes.Messages.ProcessingRequest = ..getSessionMessage(
+			..%SessionId,
+			"OSEX.IOP.Jokes.Messages.ProcessingRequest"
+		)
+		if ($isobject(processingRequest)) {
+			$$$TRACE("(processingRequest ((family """_processingRequest.Family_""")(amount "_processingRequest.Amount_")))")
+		}
+	} catch ex {
+		$$$LOGERROR("Error: "_ex.DisplayString())
+	}
+
+	// ------------------------------------------------------------------------
 	
 	return status
 }
@@ -89,6 +108,24 @@ Method validateFamily(family As %String) As %Status [ Private ]
 	}
 	
 	return $$$OK
+}
+
+/// Get the latest "messageClassName" message from the session "sessionId".
+Method getSessionMessage(sessionId As %Integer, messageClassName As %String) [ Private ]
+{
+	#dim messageId as %Integer = 0
+
+	&sql(
+		select top 1 
+		MessageBodyId into :messageId 
+		from Ens.MessageHeader 
+		where 
+			SessionId = :sessionId
+		and MessageBodyClassName = :messageClassName
+		order by ID desc
+	)
+
+	return $CLASSMETHOD(messageClassName,"%OpenId",messageId)
 }
 
 Storage Default
