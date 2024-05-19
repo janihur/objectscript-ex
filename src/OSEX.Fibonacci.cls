@@ -1,4 +1,5 @@
-/// A different way to calculate the Fibonacci sequence.
+/// Different ways to calculate the Fibonacci sequence.
+/// https://en.wikipedia.org/wiki/Fibonacci_sequence
 Class OSEX.Fibonacci Extends %RegisteredObject
 {
 

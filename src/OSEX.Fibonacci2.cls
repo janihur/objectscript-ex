@@ -1,4 +1,5 @@
 /// Calculate the Fibonacci sequence using a recursive function and memoization.
+/// https://en.wikipedia.org/wiki/Fibonacci_sequence
 Class OSEX.Fibonacci2 Extends %RegisteredObject
 {
 
