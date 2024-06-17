@@ -132,6 +132,31 @@ NAMESPACE>zw ##class(OSEX.IOP.Jokes.Runner).Run("simpsons")
 
 Mermaid [sequence diagram](https://mermaid.js.org/syntax/sequenceDiagram.html): [osex-iop-jokes.svg](osex-iop-jokes.svg)
 
+## `OSEX.IOP.Misc`
+
+Miscellany Interoperability (IOP) stuff:
+
+`Misc.Operations.CustomHttpRequest` how to use custom HTTP request with `EnsLib.REST.Operation`.
+
+Have WireMock running:
+```
+java -jar wiremock-standalone.jar \
+ --disable-gzip \
+ --no-request-journal \
+ --port 8080 \
+ --print-all-network-traffic \
+ --root-dir wiremock/ \
+ --verbose
+```
+
+Call:
+```
+set request = ##class(Ens.Request).%New()
+set response = ##class(Ens.Response).%New()
+zwrite ##class(Ens.Director).CreateBusinessService("Misc.Services.Main",.service)
+zwrite service.ProcessInput(request,.response)
+```
+
 ## `OSEX.IOP.UniversalExports`
 
 [Interoperability](https://www.intersystems.com/data-platform/interoperability/) (IOP) production outbound HTTP REST example that demonstrates:

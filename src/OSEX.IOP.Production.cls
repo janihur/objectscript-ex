@@ -29,6 +29,13 @@ XData ProductionDefinition
     <Setting Target="Adapter" Name="URL">/quotes</Setting>
     <Setting Target="Adapter" Name="SSLConfig">ISC.FeatureTracker.SSL.Config</Setting>
   </Item>
+  <Item Name="Misc.Services.Main" Category="Misc" ClassName="OSEX.IOP.Misc.Services.Main" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+  </Item>
+  <Item Name="Misc.Operations.CustomHttpRequest" Category="Misc" ClassName="OSEX.IOP.Misc.Operations.CustomHttpRequest" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Adapter" Name="HTTPServer">host.docker.internal</Setting>
+    <Setting Target="Adapter" Name="HTTPPort">8080</Setting>
+    <Setting Target="Adapter" Name="URL">/customhttprequest</Setting>
+  </Item>
   <Item Name="UniversalExports.Services.Main" Category="UniversalExports" ClassName="OSEX.IOP.UniversalExports.Services.Main" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
   </Item>
   <Item Name="UniversalExports.Processes.Main" Category="UniversalExports" ClassName="OSEX.IOP.UniversalExports.Processes.Main" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
@@ -46,4 +53,3 @@ XData ProductionDefinition
 }
 
 }
-
