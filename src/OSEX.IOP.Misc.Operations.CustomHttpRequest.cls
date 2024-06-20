@@ -7,38 +7,41 @@ Parameter INVOCATION = "Queue";
 
 Method Call(request As Ens.Request, Output response As Ens.Response) As %Status
 {
-    $$$TRACE("OSEX.IOP.Misc.Operations.CustomHttpRequest.Call()")
+  $$$TRACE("OSEX.IOP.Misc.Operations.CustomHttpRequest.Call()")
 
-    // example json payload ---------------------------------------------------
+  #dim status as %Status = $$$OK
 
-    set payload = ##class(%Stream.GlobalCharacter).%New()
-    #dim json as %DynamicObject = {"payload": "Hello, World!"}
-    do json.%ToJSON(payload)
+  // example json payload ---------------------------------------------------
+
+  set payload = ##class(%Stream.GlobalCharacter).%New()
+  #dim json as %DynamicObject = {"payload": "Hello, World!"}
+  do json.%ToJSON(payload)
     
-    // custom http request -----------------------------------------------------
-    #dim httpRequest as %Net.HttpRequest = ##class(%Net.HttpRequest).%New()
+  // custom http request -----------------------------------------------------
+  #dim httpRequest as %Net.HttpRequest = ##class(%Net.HttpRequest).%New()
 
-    #dim status as %Status = httpRequest.EntityBody.CopyFrom(payload)
-    $$$TRACE("(status """_$$$StatusDisplayString(status)_""")")
-    return:$$$ISERR(status) status
+  // payload needs to be here
+  set status = httpRequest.EntityBody.CopyFrom(payload)
+  $$$TRACE("(status """_$$$StatusDisplayString(status)_""")")
+  return:$$$ISERR(status) status
 
-    // standard headers are properties
-    set httpRequest.ContentType = "application/json"
-    set httpRequest.ContentCharset = "UTF-8"
+  // standard headers are properties
+  set httpRequest.ContentType = "application/json"
+  set httpRequest.ContentCharset = "UTF-8"
 
-    // customer headers (ignoring %Status return value)
-    do httpRequest.SetHeader("X-Clacks-Overhead","GNU Terry Pratchett")
+  // custom headers (ignoring %Status return value)
+  do httpRequest.SetHeader("X-Clacks-Overhead","GNU Terry Pratchett")
 
-    // make the request --------------------------------------------------------
+  // make the request --------------------------------------------------------
 
 	#dim httpResponse as %Net.HttpResponse = $$$NULLOREF
 
-    set status = ..Adapter.SendFormDataArray(.httpResponse,"POST",httpRequest)
+  set status = ..Adapter.SendFormDataArray(.httpResponse,"POST",httpRequest)
 		
 	$$$TRACE("(status """_$$$StatusDisplayString(status)_""")")
-    $$$TRACE("(httpResponse "_..HttpResponseToString(httpResponse,1)_")")
+  $$$TRACE("(httpResponse "_..HttpResponseToString(httpResponse,1)_")")
 
-    // ------------------------------------------------------------------------
+  // ------------------------------------------------------------------------
 
     return status
 }

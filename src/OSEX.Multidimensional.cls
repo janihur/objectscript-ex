@@ -113,12 +113,111 @@ ClassMethod Ex3()
 	set d("C") = "OPERATED_ERROR"
 	set d("D") = "NOT_OPERATED_YET"
 	set d("E") = "NOT_OPERATED_YET"
+	set d("F",1) = "NOT_OPERATED_YET"
+	set d("F",3) = "NOT_OPERATED_YET"
 
 	// convert to string ------------------------------------------------------
-	write ..MdToString(.d),!
+	write ..MdToString2(.d),!
 }
 
-ClassMethod MdToString(ByRef md) As %String [ Private ]
+ClassMethod Ex4()
+{
+	#dim operationList as %ListOfDataTypes = ##class(%ListOfDataTypes).%New()
+	do operationList.Insert("OP.1")
+	do operationList.Insert("OP.2")
+	do operationList.Insert("OP.3")
+	do operationList.Insert("OP.4")
+	do operationList.Insert("OP.5")
+	do operationList.Insert("OP.6")
+
+	#dim dataSet1 // md
+	set dataSet1("OP.1") = "DS.1"
+	set dataSet1("OP.2") = "DS.1"
+	set dataSet1("OP.3") = "DS.2"
+	set dataSet1("OP.4") = ""
+	
+	write "--- original data:",!
+	zwrite operationList
+	zwrite dataSet1
+
+	// ------------------------------------------------------------------------
+
+	#dim i as %Integer
+	for i=1:1:operationList.Count() {
+		#dim operation as %String = operationList.GetAt(i)
+		if ('$data(dataSet1(operation))) {
+			set dataSet1(operation) = ""
+		}
+	}
+	write "--- modified dataSet1:",!
+	zwrite dataSet1
+
+	// ------------------------------------------------------------------------
+
+	#dim dataSet2 // md
+	#dim index1 as %String = $order(dataSet1(""))
+	#dim index2 as %Integer = 1
+	while (index1 '= "") {
+		#dim value as %String = $get(dataSet1(index1))
+		if (value = "") {
+			set value = "default"
+		}
+		#dim hasIndex as %Boolean = $data(dataSet2(value))
+		if (hasIndex) {
+			do $increment(index2)
+		} else {
+			set index2 = 1
+		}
+		set dataSet2(value, index2) = index1
+		set index1 = $order(dataSet1(index1))
+	}
+	write "--- dataSet2:",!
+	zwrite dataSet2
+
+	// ------------------------------------------------------------------------
+
+	write "--- operating:",!
+	#dim dataSet as %String = ""
+	for {
+		set dataSet = $order(dataSet2(dataSet))
+		quit:(dataSet = "")
+		write "dataset: "_dataSet,!
+
+		#dim index3 as %String = ""
+		for {
+			set index3 = $order(dataSet2(dataSet,index3))
+			quit:(index3 = "")
+			write "  operation: "
+			write index3
+			write ": "
+			write $get(dataSet2(dataSet, index3)),!
+		}
+	}
+}
+
+ClassMethod Ex5()
+{
+	set a("A", 1) = 1
+	set a("A", 2) = 2
+	set a("A", 3) = 3
+	set a("B", 1) = 4
+
+	write "---",!
+	write ..MdToString(.a),!
+
+	write "---",!
+	write ..MdToString2(.a),!
+
+	// #1038: Private variable not allowed
+	// #dim ref as %String = $query(a(""))
+
+	// but works in method with PublicList
+	write "---",!	
+	write ..MdToString3(.a),!
+}
+
+/// multidimensional with one subscript max to string
+ClassMethod MdToString(ByRef md) As %String
 {
 	#dim accu as %String = ""
 
@@ -132,5 +231,43 @@ ClassMethod MdToString(ByRef md) As %String [ Private ]
 	return accu
 }
 
+/// multidimensional with two subscripts max to string
+ClassMethod MdToString2(ByRef md) As %String
+{
+	#dim accu as %String = ""
+
+	#dim key1 as %String = ""
+	for {
+		set key1 = $order(md(key1))
+		quit:(key1 = "")
+		#dim hasData as %Integer = $data(md(key1))
+		// write "key1: "_key1_", hasData: "_hasData,!
+		if (hasData = 10) {
+			#dim key2 as %String = ""
+			for {
+				set key2 = $order(md(key1, key2))
+				quit:(key2 = "")
+				set accu = accu_"("_key1_" "_key2_" "_$get(md(key1, key2))_")"
+			}
+		} else {
+			set accu = accu_"("_key1_" "_$get(md(key1))_")"
+		}
+	}
+
+	return accu
 }
 
+ClassMethod MdToString3(ByRef md) As %String [ PublicList = md ]
+{
+	#dim accu as %String = ""
+
+    set ref = $query(md(""))
+    while (ref '= "") {
+		set accu = accu_"("_ref_" "_@ref_")"
+        set ref = $query(@ref)
+    }
+
+	return accu
+}
+
+}
