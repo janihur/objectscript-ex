@@ -4,13 +4,30 @@ InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScri
 
 ## ObjectScript Code Management
 
-Code management operations are part of [`%SYSTEM.OBJ`](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25SYSTEM.OBJ) class.
+Code management operations for ObjectScript classes are part of [`%SYSTEM.OBJ`](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25SYSTEM.OBJ) class.
+
+Classes in Management Portal:
+```
+System Explorer > Classes
+```
 
 |Operation|Command|Details|
 |---------|-------|-------|
 |Import   |`do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)`|Import all code in `<DIR>` directory recursively to server.|
 |Export   |`do ##class(OSEX.Export).ExportClasses("<REGEX>","<DIR>")`|Export all class code to `<DIR>` directory from server where `<REGEX>` have to match the whole class name. E.g. all classes of `OSEX`top level package: `OSEX\..*`.|
 |Delete   |`do $system.OBJ.DeletePackage("<PACKAGE>")`|Delete all classes of the specified `<PACKAGE>` from server.|
+
+Routines can be managed with [`%Library.Routine`](https://docs.intersystems.com/irisforhealthlatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25Library.Routine) class.
+
+Routines in Management Portal:
+```
+System Explorer > Routines
+```
+
+Delete a routine:
+```
+zwrite ##class(%Routine).Delete("<ROUTINE>")
+```
 
 ## How to Create Namespace
 
