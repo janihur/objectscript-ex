@@ -6,7 +6,7 @@ ClassMethod Run(book As %String = "kalevala", amount As %Integer = 1) As %Status
 	#dim status as %Status
 
 	#dim service as OSEX.IOP.UniversalExports.Services.Main
-	$$$THROWONERROR(status, ##class(Ens.Director).CreateBusinessService("OSEX.IOP.UniversalExports.Services.Main",.service))
+	$$$THROWONERROR(status, ##class(Ens.Director).CreateBusinessService("UniversalExports.Services.Main",.service))
 	
 	#dim request = ##class(OSEX.IOP.UniversalExports.Messages.BookExportRequest).%New()
 	set request.Book = book
@@ -36,4 +36,3 @@ ClassMethod Run(book As %String = "kalevala", amount As %Integer = 1) As %Status
 }
 
 }
-

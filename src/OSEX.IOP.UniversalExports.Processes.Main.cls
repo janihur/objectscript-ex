@@ -21,7 +21,7 @@ Method OnRequest(pRequest As OSEX.IOP.UniversalExports.Messages.BookExportReques
 	// 1/2 export -------------------------------------------------------------
 	
 	#dim exportResponse as OSEX.IOP.UniversalExports.Messages.ExportResponse = $$$NULLOREF
-	set status = ..SendRequestSync("OSEX.IOP.UniversalExports.Operations.BookExport",pRequest,.exportResponse)
+	set status = ..SendRequestSync("UniversalExports.Operations.BookExport",pRequest,.exportResponse)
 
 	return:$$$ISERR(status) status
 	
@@ -104,4 +104,3 @@ Storage Default
 }
 
 }
-
