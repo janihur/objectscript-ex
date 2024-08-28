@@ -14,7 +14,6 @@ Method %OnNew(foo As %String = "", bar As %Integer = 0) As %Status
     return $$$OK
 }
 
-/// Description
 Query ByFoo(foo As %String = "") As %SQLQuery(COMPILEMODE = "IMMEDIATE", CONTAINID = 1, ROWSPEC = "ID:%Integer,Foo:%String,Bar:%Integer", SELECTMODE = "RUNTIME") [ SqlName = OSEX_ClassQuery_ByFoo, SqlProc ]
 {
     SELECT ID, Foo, Bar

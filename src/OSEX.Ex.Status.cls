@@ -71,6 +71,11 @@ ClassMethod Ex3()
 	
 	#dim len as %Integer = statusDetails
 	write !,"(length ",len,")",!
+
+	write "--- $system.Status.GetErrorText():",!
+	zwrite $system.Status.GetErrorText(status)
+	write "--- $system.Status.GetErrorCodes()",!
+	zwrite $system.Status.GetErrorCodes(status)
 }
 
 /// Ensemble embeds errors
@@ -95,4 +100,3 @@ ClassMethod Ex4()
 }
 
 }
-
