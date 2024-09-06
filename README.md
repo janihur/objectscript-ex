@@ -15,7 +15,8 @@ System Explorer > Classes
 |---------|-------|-------|
 |Import   |`do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)`|Import all code in `<DIR>` directory recursively to server.|
 |Export   |`do ##class(OSEX.Export).ExportClasses("<REGEX>","<DIR>")`|Export all class code to `<DIR>` directory from server where `<REGEX>` have to match the whole class name. E.g. all classes of `OSEX`top level package: `OSEX\..*`.|
-|Delete   |`do $system.OBJ.DeletePackage("<PACKAGE>")`|Delete all classes of the specified `<PACKAGE>` from server.|
+|Delete Package|`do $system.OBJ.DeletePackage("<PACKAGES>")`|Delete all classes of the specified `<PACKAGES>` from server. `<PACKAGES>` can be a single package name, a comma separated list of package names or `* ` to delete all classes.|
+|Delete Class  |`do $system.OBJ.Delete("<CLASSES>")`|Delete a class or classes from server. `<CLASSES>` can be a single class name, a comma separated list of class names or a multidimensional array of class names. Accepts `?` and `*` wildcards and not operator `'` to exclude class from deletion.|
 
 Routines can be managed with [`%Library.Routine`](https://docs.intersystems.com/irisforhealthlatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25Library.Routine) class.
 
@@ -46,11 +47,16 @@ See also [Namespaces and Databases](https://docs.intersystems.com/irislatest/csp
 
 ## IOP Production Management
 
+[Ens.Director](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=ENSLIB&PRIVATE=1&CLASSNAME=Ens.Director)
+
 |Operation|Command|Details|
 |---------|-------|-------|
+|Status   |`do ##class(Ens.Director).GetProductionStatus(.name,.state)`||
 |Start    |`do ##class(Ens.Director).StartProduction("OSEX.IOP.Production")`||
+|Stop     |`do ##class(Ens.Director).StopProduction("OSEX.IOP.Production")`||
 |Remove   |`do ##class(Ens.Director).DeleteProduction("OSEXPKG.FoundationProduction")`||
 |Restart  |`do ##class(Ens.Director).RestartProduction()`||
+|Clean    |`do ##class(Ens.Director).CleanProduction()`|Development time only, see [Resetting Productions in a Namespace](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EGDV_testing#EGDV_prod_cleanProd).|
 
 ## IOP Production Purge
 
