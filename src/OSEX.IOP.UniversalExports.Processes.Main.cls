@@ -49,6 +49,17 @@ Method OnRequest(pRequest As OSEX.IOP.UniversalExports.Messages.BookExportReques
 	return status
 }
 
+ClassMethod OnGetConnections(Output array As %String, item As Ens.Config.Item)
+{
+	do ##super(.array,item)
+	
+	#dim businessOperationList as %ListOfDataTypes = ..queryBusinessOperations("OSEX.IOP.UniversalExports","BookImport")
+
+	for i=1:1:businessOperationList.Count() {
+		set array(businessOperationList.GetAt(i)) = ""
+	}
+}
+
 /// returns all business operations attribute of services where
 /// Service.Domain match the query parameter AND
 /// Service.Stage = Live AND
