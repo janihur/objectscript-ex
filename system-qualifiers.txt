@@ -1,0 +1,583 @@
+https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RCOS_vsystem_flags_qualifiers
+
+OSEX>zw $ZV
+"IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2022.1.2 (Build 574_0_22161U) Tue Jan 24 2023 11:05:57 EST"
+
+OSEX>Do $system.OBJ.ShowQualifiers()
+
+           Name: /all
+    Description: Display query costs for alternate plans in addition to the execution plan. Synonymous with 'alt'
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /alt
+    Description: Display query costs for alternate plans in addition to the execution plan. Synonymous with 'all'
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /autoinclude
+    Description: Automatically include any classes that are not up to date required to compile this class
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /autoload
+    Description: In UnitTest, specifies the directory to be auto-loaded.
+           Type: string
+  Current Value: _autoload
+  Default Value: _autoload
+
+           Name: /checkschema
+    Description: Validate imported XML files against the schema definition.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /checkstoragedefined
+    Description: Check loaded class has storage defined for all properties.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /checksysutd
+    Description: Check system classes for up-to-dateness
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /checkuptodate
+    Description: Skip classes or expanded classes that are up-to-date.
+           Type: enum
+  Current Value: expandedonly
+           Flag: all
+      Enum List: none,all,expandedonly,0,1
+  Default Value: expandedonly
+  Present Value: all
+  Negated Value: none
+
+           Name: /cleanup
+    Description: In UnitTest, if true the unit test will cleanup new globals when it finishes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /compile
+    Description: Causes classes loaded to be compiled as well.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /compileembedded
+    Description: Compile embedded SQL queries when containing routine/class is compiled.
+           Type: string
+  Current Value: 0
+  Default Value: 0
+
+           Name: /createdirs
+    Description: In Export, create directories if they do not exist
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /cspcompileclass
+    Description: Causes classes created by CSP or CSR load to be compiled. Only effects the CSP/CSR load and not subsequent class compiles.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /cspdeployclass
+    Description: When CSP page loaded deploy the class generated
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /csphidden
+    Description: Classes generated from CSP and CSR compilation are marked as hidden.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /debug
+    Description: In UnitTest, /debug causes the Asserts to BREAK if they fail.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /defaultowner
+    Description: When loading classes if the class owner keyword is not defined set the owner to this user, if $username then set it to the current user
+           Type: string
+
+           Name: /defines
+    Description: Comma separated list of macros with their optional values.
+           Type: string
+
+           Name: /definitions
+    Description: Specify 1 to export the table/view definitions. The default is 1.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /delete
+    Description: In UnitTest, loaded classes should be deleted.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /deleteextent
+    Description: Delete extent.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /deleteleftoverclasses
+    Description: In UnitTest, leftover classes should be deleted.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /detail
+    Description: Show detailed information.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /diffexport
+    Description: Do not include time modified or platform information in export so the files can be run through diff/merge tools.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /display
+    Description: Alias qualifier for /displaylog and displayerror.
+           Type: alias
+      Enum List: error,log
+     Alias List: displayerror,displaylog
+  Present Value: all
+  Negated Value: none
+      All Value: all
+     None Value: none
+
+           Name: /displayerror
+    Description: Display error information.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /displaylog
+    Description: Display log information
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /documatichost
+    Description: In Export, specify host that is used in JavaDoc generation
+           Type: string
+
+           Name: /documaticnamespace
+    Description: In Export, specify namespace that is used in JavaDoc generation
+           Type: string
+
+           Name: /documaticport
+    Description: In Export, specify port that is used in JavaDoc generation
+           Type: string
+
+           Name: /echomode
+    Description: If true, all statement source is displayed on the current device.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /eosdelimiter
+    Description: End of statement delimiter
+           Type: string
+
+           Name: /errorpause
+    Description: The number of seconds to pause when an error is reported. The default is five seconds.
+           Type: string
+  Current Value: 5
+  Default Value: 5
+
+           Name: /expand
+    Description: Alias qualifier for /predecessorclasses, /subclasses and /relatedclasses.
+           Type: alias
+      Enum List: predecessorclasses,subclasses,relatedclasses
+     Alias List: predecessorclasses,subclasses,relatedclasses
+  Present Value: all
+  Negated Value: none
+      All Value: all
+     None Value: none
+
+           Name: /exportgenerated
+    Description: When exporting classes also export generated classes where the class generating them is also included
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /exportselectivity
+    Description: Export the selectivity values stored in the storage definition for this class
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /exportversion
+    Description: In XML export of class the version of IRIS/Cache the class will be imported into.
+           Type: string
+  Current Value: 0
+  Default Value: 0
+
+           Name: /extensions
+    Description: A comma delimited list of file extensions to import
+           Type: string
+
+           Name: /fileopenparam
+    Description: Parameter to use when opening a file
+           Type: string
+  Current Value: WNS
+  Default Value: WNS
+
+           Name: /filterin
+    Description: Alias qualifier for /application, /system and /percent.
+           Type: alias
+      Enum List: system,percent,application
+     Alias List: system,percent,application
+  Present Value: (none)
+  Negated Value: (none)
+      All Value: all
+     None Value: none
+
+           Name: /findleakedvariables
+    Description: In UnitTest, fail if unexpected public variables are present after running a test.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /frozenplans
+    Description: Indicates whether to include frozen plans
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /generated
+    Description: When expanding wild cards include generated items (routines/classes/etc)
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /generatemap
+    Description: Generate the map file.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /generationtype
+    Description: In Export, specify generation mode
+           Type: string
+
+           Name: /genserialuid
+    Description: In Export, generate serialVersionUID.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /hidden
+    Description: Show hidden classes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /ids
+    Description: A $List of IDs
+           Type: string
+
+           Name: /importselectivity
+    Description: If 0 then do not import selectivity values from the XML file. If 1 then import the selectivity values stored in the storage definition when importing XML file. If 2 keep any existing selectivity values but if a property does not have an existing value then use the selectivity from the XML file.
+           Type: enum
+  Current Value: 2
+      Enum List: 0,1,2
+  Default Value: 2
+  Present Value: 2
+  Negated Value: 0
+
+           Name: /includesubpackages
+    Description: Include sub-packages.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /javadoc
+    Description: In Export, create javadoc.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /journal
+    Description: Enable/disable journaling for this operation
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /keepsource
+    Description: Keep the source code of generated routines.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /load
+    Description: In UnitTest, classes should be loaded. If not, then only classnames are obtained from the directories.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /loadudl
+    Description: In UnitTest, udl files should be loaded.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /loadxml
+    Description: In UnitTest, xml files should be loaded.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /logfile
+    Description: The full path name of the file to report errors in
+           Type: string
+
+           Name: /make
+    Description: In Export, only generate dependency or class if timestamp of last compilation is greater than timestamp of last generation
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /mapped
+    Description: Include classes mapped from another database
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /mergeglobal
+    Description: If importing a global from XML file merge the global with existing data.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /messagemode
+    Description: If true then all messages reported by executing imported statements will be displayed on the current device.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /multicompile
+    Description: Enable use of work queue manager (optionally specify the number of workers if value >1)
+           Type: string
+  Current Value: 1
+  Default Value: 1
+
+           Name: /newcollections
+    Description: In Export, use native Java collections.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /outliers
+    Description: Indicates whether to include outlier processing
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /packages
+    Description: $List of package names to use
+           Type: string
+
+           Name: /percent
+    Description: Include percent classes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /pojo
+    Description: In Export, use POJO generation mode
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /predecessorclasses
+    Description: Recursively include dependency predecessor classes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /preparse
+    Description: Preparse the SQL statement to perform literal replacement
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /primitivedatatypes
+    Description: In Export, use Java primitives for %Integer, %Boolean, %BigInt, %Float.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /privileges
+    Description: Specify 1 to export the Table and View privileges for the tables and views specified in the schema specification. The default is 1.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /projectabstractstream
+    Description: In Export, project classes that contain methods whose arguments are abstract streams or whose return type is an abstract stream.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /projectbyrefmethodstopojo
+    Description: In Export, project byref methods to pojo implementation.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /quiet
+    Description: Defines whether to suppress output to the console.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /recurse
+    Description: If true, subdirectories will be recursively imported.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /recursive
+    Description: Determines if Export classes recursively, or if UnitTest tests in subdirectories should run recursively.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /relatedclasses
+    Description: Recursively include related classes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /retainstorage
+    Description: When importing a class if imported class does not have a storage definition and the prior version of this class does have a storage definition then keep the existing storage definition.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /roles
+    Description: Specify 1 to export the Role definition, and the GRANT statements to assign the Roles to the Users and Roles they have been granted to. The default is 1.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /run
+    Description: In UnitTest, tests should run
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /schemapath
+    Description: Override for %sqlSchemaPath
+           Type: string
+
+           Name: /selectmode
+    Description: Select mode to use for the compile that produces the plan
+           Type: string
+
+           Name: /skipstorage
+    Description: In class Export, if true do not export storage definition.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /sqlsystemprivileges
+    Description: Specify 1 to export the SQL System privileges defined in the current namespace for the users and roles. The default is 1.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /stat
+    Description: Include stats. Synonymous with 'stats'
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /stats
+    Description: Include stats. Synonymous with 'stat'
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /subclasses
+    Description: Recursively include sub-classes.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /system
+    Description: Process system messages or application messages.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /udlmethodargs
+    Description: Method arguments are split onto separate lines.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /unconditionallyproject
+    Description: In Export, project items regardless of problems that may prevent code from compiling or working correctly.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /usedeepestbase
+    Description: In Export, use deepest base in which method or property is defined for method or property definition.  If P is defined in A,B, and C and A extends B extends C then C is a deeper base for P.
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+           Name: /users
+    Description: Specify 1 to export the User definition. The default is 1.
+           Type: logical
+  Current Value: 1
+  Default Value: 1
+
+           Name: /verbose
+    Description: Include all details
+           Type: logical
+  Current Value: 0
+  Default Value: 0
+
+Deprecated qualifiers :/application /foldmethods /force /incremental /keeporefvalid /lock /optimize /sqlonly /unicode
+No Default Qualifiers at system level are set.
+No Default Qualifiers for namespaces are set
+
+OSEX>Do $system.OBJ.ShowFlags()
+ See $system.OBJ.ShowQualifiers() for comprehensive list of qualifiers as flags have been superseded by qualifiers
+
+    b - Include sub classes.
+    c - Compile. Compile the class definition(s) after loading.
+    d - Display. This flag is set by default.
+    e - Delete extent.
+    h - Show hidden classes.
+    i - Validate XML export format against schema on Load.
+    k - Keep source.  When this flag is set, source code of
+        generated routines will be kept.
+    p - Percent.  Include classes with names of the form %*.
+    r - Recursive.  Compile all the classes that are dependency predecessors.
+    s - Process system messages or application messages.
+    u - Update only.  Skip compilation of classes that are already up-to-date.
+    y - Include classes that are related to the current class in the way that
+        they either reference to or are referenced by the current class in SQL usage.
+
+These flags are deprecated a, f, g, l, n, o, q, v
+Default flags for this namespace
+You may change the default flags with the SetFlags(flags,system) classmethod.
