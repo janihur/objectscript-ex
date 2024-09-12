@@ -2,6 +2,10 @@
 
 InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScript](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro) code snippets and examples.
 
+## Editor (Visual Studio Code) Setting
+
+See [`.vscode/settings.json`](.vscode/settings.json) for [InterSystems ObjectScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=intersystems-community.vscode-objectscript) settings used here and [Settings Reference](https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_settings) for the full list.
+
 ## ObjectScript Code Management
 
 Code management operations for ObjectScript classes are part of [`%SYSTEM.OBJ`](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25SYSTEM.OBJ) class.
@@ -13,7 +17,7 @@ System Explorer > Classes
 
 |Operation|Command|Details|
 |---------|-------|-------|
-|Import   |`do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)`|Import all code in `<DIR>` directory recursively to server.|
+|Import   |`do $system.OBJ.ImportDir("<DIR>",,"/compile=1",,1)`|Import and compile all code in `<DIR>` directory recursively to server.|
 |Export   |`do ##class(OSEX.Export).ExportClasses("<REGEX>","<DIR>")`|Export all class code to `<DIR>` directory from server where `<REGEX>` have to match the whole class name. E.g. all classes of `OSEX`top level package: `OSEX\..*`.|
 |Delete Package|`do $system.OBJ.DeletePackage("<PACKAGES>")`|Delete all classes of the specified `<PACKAGES>` from server. `<PACKAGES>` can be a single package name, a comma separated list of package names or `* ` to delete all classes.|
 |Delete Class  |`do $system.OBJ.Delete("<CLASSES>")`|Delete a class or classes from server. `<CLASSES>` can be a single class name, a comma separated list of class names or a multidimensional array of class names. Accepts `?` and `*` wildcards and not operator `'` to exclude class from deletion.|

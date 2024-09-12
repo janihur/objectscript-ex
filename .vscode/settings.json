@@ -1,0 +1,19 @@
+{
+    // https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_settings
+    "intersystems.language-server.diagnostics.routines": true,
+    "intersystems.language-server.formatting.commands.case": "lower",
+    "intersystems.language-server.formatting.system.case": "lower",
+    // https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RCOS_vsystem_flags_qualifiers
+    // b - Includes subclasses and classes that reference the current class in SQL usage.
+    // c - Compiles the class definitions after loading.
+    // k - Keep source. When this flag is set, source code of generated routines will be kept.
+    // r - Recursive. Compiles all the classes that are dependency predecessors.
+    // u - Update only. Skip compilation of classes that are already up-to-date.
+    // TODO: replace flags (deprecated) with qualifiers
+    "objectscript.compileFlags": "bckru",
+    "objectscript.conn": {
+        "active": true
+    },
+    "objectscript.multilineMethodArgs": true,
+    "objectscript.overwriteServerChanges": true,
+}
