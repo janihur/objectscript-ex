@@ -1,0 +1,27 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "objectscript",
+            "request": "launch", // create a new process
+            "name": "OSEX.Fibonacci1",
+            "program": "##class(OSEX.Fibonacci1).F1(10)"
+        },
+        {
+            "type": "objectscript",
+            "request": "launch", // create a new process
+            "name": "OSEX.IOP.Jokes.Runner",
+            "program": "##class(OSEX.IOP.Jokes.Runner).Run()"
+        },
+        {
+            "type": "objectscript",
+            "request": "attach",
+            "name": "Attach to running process",
+            "processId": "${command:PickProcess}",
+            "system": true
+        }
+    ]
+}
