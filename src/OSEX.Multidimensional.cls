@@ -38,7 +38,9 @@ ClassMethod Ex1()
 	}
 }
 
-ClassMethod f(foo As %String = {..#Foo}, bar As %String = {..#Bar}) As %String [ Private ]
+ClassMethod f(
+	foo As %String = {..#Foo},
+	bar As %String = {..#Bar}) As %String [ Private ]
 {
 	return "(foo """_foo_""")(bar """_bar_""")"
 }
@@ -88,7 +90,7 @@ ClassMethod Ex2()
 }
 
 /// returns a specific string from %Status if the status contains the specific error
-ClassMethod GetStringFromStatus(ByRef statusDetails As %String) As %String [ Private ]
+ClassMethod GetStringFromStatus(ByRef statusDetails) As %String [ Private ]
 {
 	if (($get(statusDetails(1,"code")) = 83) && ($get(statusDetails(1,"param",1)) = "OSEX.IOP.Jokes.Error")) {
 		return $get(statusDetails(1,"param",2))
@@ -268,6 +270,62 @@ ClassMethod MdToString3(ByRef md) As %String [ PublicList = md ]
     }
 
 	return accu
+}
+
+/// split string to multidimensional parent and child
+ClassMethod Ex6()
+{
+	// ------------------------------------------------------------------------
+	set string = "a.b.c.d"
+	set list = ..StringSplit(string, ".")
+	zwrite list
+
+	set md = ""
+
+	do ..List2Md(list, .md)
+	zwrite md
+
+	// ------------------------------------------------------------------------
+	set string = "a.x.y.d"
+	set list = ..StringSplit(string, ".")
+	zwrite list
+
+	set md = ""
+
+	do ..List2Md(list, .md)
+	zwrite md
+}
+
+/// custom conversion from list to multidimensional
+ClassMethod List2Md(
+	list As %List,
+	ByRef md) [ PublicList = md ]
+{
+	set previous = ""
+	set current = ""
+
+	set ptr = 0
+	while ($listnext(list,ptr,item)) {
+		set previous = current
+		set current = item
+		set md(current) = previous
+	}
+}
+
+ClassMethod StringSplit(
+	string As %String,
+	delimiter As %String) As %List
+{
+	set list = ""
+	set pos = $find(string, delimiter)
+	while (pos > 0) {
+		set item = $extract(string, 1, pos-2)
+		set list = list _ $listbuild(item)
+		set string = $extract(string, pos, $length(string))
+		set pos = $find(string, delimiter)
+	}
+	set list = list _ $listbuild(string)
+	return list
 }
 
 }
