@@ -57,4 +57,33 @@ ClassMethod Ex3()
 	}
 }
 
+ClassMethod Ex4()
+{
+	#dim json as %DynamicObject = { 
+		"array": ["foo","bar"],
+		"boolean": true,
+		"null": null,
+		"number": 42,
+		"object": { "key": "value" },
+		"string": "string"
+	}
+	
+	#dim iter as %Iterator.Object = json.%GetIterator()
+	
+	#dim key as %String = ""
+	#dim value // any
+	#dim type as %String = ""
+	while (iter.%GetNext(.key, .value, .type)) {
+		write "---",!
+		write "(key "_key_")(value "_value_")(type "_type_")",!
+		// two ways to check for object
+		if ($isobject(value)) {
+			write "isobject()    check: ",value.%ToJSON(),!
+		}
+		if ((type = "array")||(type = "object")) {
+			write "type variable check: ",value.%ToJSON(),!
+		}
+	}
+}
+
 }
