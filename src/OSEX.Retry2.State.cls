@@ -25,25 +25,31 @@ Property stateIter As %Iterator.Array [ Private ];
 
 Property state As %DynamicArray [ Private ];
 
+/// <p>Makes a deep copy of <code>initialState</code>.</p>
 Method %OnNew(initialState As %DynamicArray) As %Status
 {
-    set ..state = initialState
+    // DIY deep copy
+    // https://community.intersystems.com/post/how-clone-dynamic-objects#comment-246441
+    set tmpStream = ##class(%Stream.TmpCharacter).%New()
+    do initialState.%ToJSON(tmpStream)
+    set ..state = [].%FromJSON(tmpStream)
+
     set ..stateIter = ..state.%GetIterator()
+    
     return $$$OK
 }
 
-Method GetNext(
-	Output key As %Integer,
-	Output value As %DynamicObject) As %Boolean
+Method GetNext(Output operation As %Integer) As %Boolean
 {
     while (..stateIter.%GetNext(.key, .value)) {
         if ((value.state = "INITIAL")||(value.state = "RETRY")) {
+            set operation = value.operation
             return 1
         }
     }
     if (..IsOperationsLeft()) {
         set ..stateIter = ..state.%GetIterator()
-        return ..GetNext(.key, .value)
+        return ..GetNext(.operation)
     }
     return 0
 }
@@ -71,6 +77,7 @@ Method MarkOperationFailed(operation As %Integer)
 
 Method GetState() As %DynamicArray
 {
+    // TODO: return a deep copy
     return ..state
 }
 
@@ -112,13 +119,13 @@ ClassMethod Ex1()
 
     set operationState = ##class(OSEX.Retry2.State).%New(state)
 
-    while (operationState.GetNext(.key, .value)) {
-        write "operating key: ",key," value: ",value.%ToJSON(),!
+    while (operationState.GetNext(.operation)) {
+        write "operating: ",operation,!
         set isError = ($random(2) = 1) // 50% chance of error
         if (isError) {
-            do operationState.MarkOperationFailed(value.operation)
+            do operationState.MarkOperationFailed(operation)
         } else {
-            do operationState.MarkOperationSucceeded(value.operation)
+            do operationState.MarkOperationSucceeded(operation)
         }
     }
     

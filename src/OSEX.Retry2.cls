@@ -18,22 +18,32 @@ ClassMethod Main()
     set operationState = ##class(OSEX.Retry2.State).%New(initialState)
 
     // iterate and operate
-    while (operationState.GetNext(.key, .value)) {
+    while (operationState.GetNext(.operation)) {
         try {
-            write "Main(): BEGIN operating #",key," ",value.%ToJSON(),!
-            do ..DoStuff(value.operation)
-            do operationState.MarkOperationSucceeded(value.operation)
-            write "Main(): END operating #",key,!
+            write "---",!
+            write "Main(): BEGIN operating: ",operation,!
+            do ..DoStuff(operation)
+            do operationState.MarkOperationSucceeded(operation)
+            write "Main(): END operating: ",operation,!
         } catch (ex) {
             write "Main(): caught exception ",..ToStr(ex),!
-            do operationState.MarkOperationFailed(value.operation)
+            do operationState.MarkOperationFailed(operation)
         }
     }
 
     // just the reporting
+    write "---",!
     write "Main(): final state:",!
     set iter = operationState.GetState().%GetIterator()
 
+    while (iter.%GetNext(.key, .value)) {
+        write "  key: ",key," value: ",value.%ToJSON(),!
+    }
+
+    // unmdified because of deep copy in ##class(OSEX.Retry2.State).%New()
+    write "---",!
+    write "Main(): initial state:",!
+    set iter = initialState.%GetIterator()
     while (iter.%GetNext(.key, .value)) {
         write "  key: ",key," value: ",value.%ToJSON(),!
     }
