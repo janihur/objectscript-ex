@@ -67,6 +67,8 @@ ClassMethod Query(action As %RegisteredObject)
         write "%Next failed:", !, "SQLCODE ", rset.%SQLCODE, ": ", rset.%Message 
         return
     }
+
+    do rset.%Close()
 }
 
 Method %OnNew(
@@ -99,6 +101,8 @@ Method Execute(
         write "%Next failed:", !, "SQLCODE ", rset.%SQLCODE, ": ", rset.%Message 
         return
     }
+
+    do rset.%Close()
 }
 
 Method Execute2(args...) As %SQL.StatementResult
@@ -163,6 +167,8 @@ ClassMethod Ex3()
 
         write !
     }
+
+    do rset.%Close()
 }
 
 }

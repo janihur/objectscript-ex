@@ -30,6 +30,8 @@ ClassMethod Walk(ByRef action As %RegisteredObject, path As %String, wildcards A
     }
   }
   if (rset.%SQLCODE < 0) {write "%Next failed:", !, "SQLCODE ", rset.%SQLCODE, ": ", rset.%Message quit}
+
+  do rset.%Close()
 }
 
 }

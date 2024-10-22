@@ -62,6 +62,8 @@ ClassMethod Ex1()
         write rs.%Get("Name")_", "_rs.%Get("Package")_", "_rs.%Get("Database")
         write !
     }
+
+    do rs.%Close()
 }
 
 }
