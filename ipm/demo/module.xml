@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="osex-ipm-demo.ZPM">
+    <Module>
+      <Name>osex-ipm-demo</Name>
+      <Version>1.0.0</Version>
+      <Description>A simple demo application illustrating IPM functionality.</Description>
+      <Author>
+        <Person>Jani Hur</Person>
+        <Organization>metsankulma.net</Organization>
+        <CopyrightDate>2024</CopyrightDate>
+        <License>MIT</License>
+      </Author>
+      <Packaging>module</Packaging>
+      <Dependencies>
+        <ModuleReference>
+          <Name>osex-ipm-hello</Name>
+          <Version>1.*</Version>
+        </ModuleReference>
+        <ModuleReference>
+          <Name>osex-ipm-numbers</Name>
+          <Version>1.*</Version>
+        </ModuleReference>
+      </Dependencies>
+      <SourcesRoot>src</SourcesRoot>
+      <Resource Name="OSEX.ipm.demo.PKG"/>
+      <Resource Name="OSEX.ipm.demo.GBL"/>
+      <Invoke Class="OSEX.ipm.demo.Main" Method="SetDefaultName">
+        <Arg>Joe Black</Arg>
+      </Invoke>
+    </Module>
+  </Document>
+</Export>

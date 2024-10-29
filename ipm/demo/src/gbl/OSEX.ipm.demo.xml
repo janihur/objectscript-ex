@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2022.1.2 (Build 574_0_22161U)" ts="2024-10-29 18:20:39">
+    <Global>
+        <Node><Sub>^OSEX.ipm.demo</Sub>
+            <Node><Sub>settings</Sub>
+                <Node><Sub>numberGenerator</Sub>
+                    <Data>OSEX.ipm.numbers.Fibonacci</Data>
+                </Node>
+            </Node>
+        </Node>
+    </Global>
+</Export>
