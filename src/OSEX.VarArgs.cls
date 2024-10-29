@@ -1,5 +1,6 @@
 Include OSEX
 
+/// <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_usercode#GCOS_usercode_args_variable">Variable Number of Parameters</a></p>
 Class OSEX.VarArgs
 {
 
