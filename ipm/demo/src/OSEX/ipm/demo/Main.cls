@@ -1,3 +1,5 @@
+Include OSEX.ipm.demo.Macros
+
 /// <p>A simple demo application illustrating basic IPM functionality.</p>
 /// <example>
 /// set demo = ##class(OSEX.ipm.demo.Main).%New()
@@ -54,7 +56,9 @@ Method Run(name As %String = "")
 	}
 
 	write ##class(OSEX.ipm.hello.Hello).Hello(name),!
-	
+
+	write "In this universe TRUE = ", $$$TRUE, " and FALSE = ", $$$FALSE, " (a macro test).", !
+
 	if ($isobject(..numberGenerator)) {
 		#dim n as %Integer = 0
 		#dim text as %String = ""
