@@ -35,6 +35,13 @@ The tool will install itself into `%SYS` namespace and will be available for all
 Start the package manager shell:
 ```
 IPMTEST1>zpm
+
+=============================================================================
+|| Welcome to the Package Manager Shell (ZPM). version 0.7.3               ||
+|| Enter q/quit to exit the shell. Enter ?/help to view available commands ||
+|| Current registry https://pm.community.intersystems.com                  ||
+=============================================================================
+zpm:IPMTEST1>
 ```
 
 By default the community registry is used.
@@ -122,9 +129,14 @@ $ curl http://localhost:52774/registry/packages/-/all | jq '.'
 ]
 ```
 
-Configure the new local repository to use:
+Configure new _remote_ repository (named local) to be used in the namespace:
 ```
 zpm:IPMTEST1>repo -name local -remote -publish 1 -url http://localhost:52773/registry/
+```
+
+Configure new _file system_ repository (named localfs) to be used in the namespace:
+```
+zpm:IPMTEST1>repo -name localfs -filesystem -depth 1 -path /home/irisowner/work/objectscript-ex/ipm/
 ```
 
 ## How to Write a Module
@@ -139,7 +151,7 @@ zpm:IPMTEST1>repo -name local -remote -publish 1 -url http://localhost:52773/reg
   * https://github.com/intersystems-community/objectscript-package-template
   * https://github.com/intersystems-community/intersystems-iris-dev-template
 
-### module.xml Cration Helpers
+### Manifest File (`module.xml`) Creation Helpers
 
 Interactively:
 ```
@@ -172,9 +184,9 @@ zpm:IPMTEST1>generate -t /home/irisowner/work/foo2
 
 I don't show the export option (`generate -export`) as it is not the workflow I prefer.
 
-### How to create a module
+### How to Create a Module
 
-A module is nothing but certain simple directory hierarchy and `module.xml` (IPM manifest) file in the top level. Here is an example of simple module `hello`:
+A module is nothing but predefined simple directory hierarchy and a (IPM manifest) (`module.xml`)  file in the top level. Here is an example of a simple `hello` module:
 ```
 $ tree
 .
@@ -217,15 +229,25 @@ zpm:IPMTEST1>
 
 ### Demo
 
+An application `OSEX.ipm.demo` module that uses two library modules:
+* `OSEX.ipm.hello`
+* `OSEX.ipm.numbers`
+
+Application uses global `^OSEX.ipm.demo` for installation and run time configuration.
+
+How to export global definition (just to get the right file format):
+```
 IPMTEST1>do $system.OBJ.Export("OSEX.ipm.demo.GBL","OSEX.ipm.demo.GBL")
 
 Exporting to XML started on 10/29/2024 18:20:39
 Exporting global: ^OSEX.ipm.demo
 Export finished successfully.
+```
 
-IPMTEST1>
-
+```
 $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
+```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2022.1.2 (Build 574_0_22161U)" ts="2024-10-29 18:20:39">
 <Global>
@@ -238,9 +260,27 @@ $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
 </Node>
 </Global>
 </Export>
+```
 
-Publish
+Only one _remote_ repo in the namespace can have publish attribute enabled. Currently the publish fails because missing authentication.
 
-Only one repo in the namesapce can have publish enabled.
+But _file system_ repository works fine.
 
-publish ...
+Install:
+```
+zpm:IPMTEST1>install osex-ipm-demo
+```
+Configuration:
+```
+zpm:IPMTEST1>exec zw ^OSEX.ipm.demo
+
+^OSEX.ipm.demo("settings","defaultName")="Joe Black"
+^OSEX.ipm.demo("settings","numberGenerator")="OSEX.ipm.numbers.Fibonacci"
+```
+Usage:
+```
+IPMTEST1>set demo = ##class(OSEX.ipm.demo.Main).%New()
+IPMTEST1>do demo.Run()
+IPMTEST1>do demo.SetDefaultName("Jani Hur")
+IPMTEST1>do demo.SetNumberGenerator("OSEX.ipm.numbers.Random")
+```
