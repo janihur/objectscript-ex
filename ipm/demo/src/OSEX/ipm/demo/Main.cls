@@ -20,13 +20,20 @@ Method %OnNew() As %Status
 	return $$$OK
 }
 
+/// <p>A very sophisticated configuration method.</p>
 Method SetNumberGenerator(
 	numberGenerator As %String,
 	args...)
 {
-	set ..numberGenerator = ..createNumberGenerator(numberGenerator, args...)
+	if (numberGenerator '= "") {
+		set ..numberGenerator = ..createNumberGenerator(numberGenerator, args...)
+	} else {
+		set ..numberGenerator = $$$NULLOREF
+		kill ^OSEX.ipm.demo("settings", "numberGenerator")
+	}
 }
 
+/// <p>A very sophisticated configuration method.</p>
 ClassMethod SetDefaultName(name As %String)
 {
 	if (name '= "") {
@@ -34,6 +41,39 @@ ClassMethod SetDefaultName(name As %String)
 	} else {
 		kill ^OSEX.ipm.demo("settings", "defaultName")
 	}
+}
+
+/// <p>A very sophisticated configuration method.</p>
+ClassMethod SetInstallDir(dir As %String)
+{
+	if (dir '= "") {
+		set ^OSEX.ipm.demo("settings", "installDir") = dir
+	} else {
+		kill ^OSEX.ipm.demo("settings", "installDir")
+	}
+}
+
+/// <p>A very sophisticated general purpose configuration method.</p>
+ClassMethod SetSetting(
+	key As %String,
+	value As %String)
+{
+	if (key '= "") {
+		set ^OSEX.ipm.demo("settings", key) = value
+	} else {
+		kill ^OSEX.ipm.demo("settings", key)
+	}
+}
+
+/// <p>Remove all configuration. The main use is for module's Unconfigure phase.</p>
+ClassMethod Unconfigure()
+{
+	do ..SetDefaultName("")
+	do ..SetInstallDir("")
+	kill ^OSEX.ipm.demo("settings", "numberGenerator")
+	// these are (optionally) set by the resource processor
+	do ..SetSetting("foo", "")
+	do ..SetSetting("bar", "")
 }
 
 ClassMethod createNumberGenerator(

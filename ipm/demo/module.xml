@@ -25,9 +25,18 @@
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="OSEX.ipm.demo.PKG"/>
       <Resource Name="OSEX.ipm.demo.GBL"/>
+      <!-- a custom resource processor example for a json file -->
+      <Resource Name="example.json" ProcessorClass="OSEX.ipm.demo.IpmResourceProcessor" Foo="from manifest Resource attribute" Bar="from manifest Resource attribute"/>
+      <!-- executed in default phase -->
       <Invoke Class="OSEX.ipm.demo.Main" Method="SetDefaultName">
         <Arg>Joe Black</Arg>
       </Invoke>
+      <Invoke Class="OSEX.ipm.demo.Main" Method="SetInstallDir">
+        <!-- expression example -->
+        <Arg>#{$system.Util.GetEnviron("ISC_PACKAGE_INSTALLDIR")}</Arg>
+      </Invoke>
+      <!-- executed in unconfigure phase (uninstall) -->
+      <Invoke Phase="Unconfigure" Class="OSEX.ipm.demo.Main" Method="Unconfigure"/>
     </Module>
   </Document>
 </Export>

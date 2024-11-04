@@ -144,6 +144,7 @@ zpm:IPMTEST1>repo -name localfs -filesystem -depth 1 -path /home/irisowner/work/
 * Developer Community
   * https://community.intersystems.com/post/anatomy-zpm-module-packaging-your-intersystems-solution
   * https://community.intersystems.com/post/simplified-objectscript-source-folder-structure-package-manager
+  * https://community.intersystems.com/post/objectscript-package-manager-naming-convention
   * https://community.intersystems.com/post/using-invoke-element-call-class-methods-objectscript-packages
 * https://github.com/intersystems/ipm/wiki/03.-IPM-Manifest-(Module.xml)
 * https://github.com/intersystems-community/objectscript-package-example
