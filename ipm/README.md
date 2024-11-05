@@ -54,6 +54,19 @@ Useful commands:
 * `search`
 * `uninstall`
 
+### Run Commands Programmatically
+
+With `##class(%ZPM.PackageManager).Shell()`:
+```
+IPMTEST1>do ##class(%ZPM.PackageManager).Shell("list-installed -tree")
+osex-ipm-demo 1.0.0
+├──osex-ipm-hello 1.0.0
+└──osex-ipm-numbers 1.0.0
+swagger-ui 1.0.0
+zpm-registry 1.3.2
+└──yaml-utils 0.1.4
+```
+
 ## The Registrys
 
 The IPM client supports two kinds of registries:
@@ -287,7 +300,7 @@ zpm:IPMTEST1>generate -t /home/irisowner/work/foo2
 
 I don't show the export option (`generate -export`) as it is not the workflow I prefer.
 
-## Publishing to Self-Hosted Remote Registry
+### Publishing to Self-Hosted Remote Registry
 
 Only one _remote_ registry can have publish attribute enabled. Run `repo -list` command and check `Deployment Enabled?` attribute.
 
