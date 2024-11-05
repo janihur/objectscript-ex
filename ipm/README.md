@@ -44,7 +44,7 @@ IPMTEST1>zpm
 zpm:IPMTEST1>
 ```
 
-By default the community registry is used.
+By default the InterSystems hosted Community registry (https://pm.community.intersystems.com) is used.
 
 Useful commands:
 * `help`
@@ -56,15 +56,31 @@ Useful commands:
 
 ## The Registrys
 
-* Community (i.e. public) registry, hosted by InterSystems
-  * https://pm.community.intersystems.com
-  * User interface frontend: https://openexchange.intersystems.com/ (covers also other sources than just the package manager)
-* Self-hosted (a.k.a. private/local i.e. your own) registry
-  * https://community.intersystems.com/post/setting-your-own-intersystems-objectscript-package-manager-registry
+The IPM client supports two kinds of registries:
+* remote
+  * This is server software implementing de-facto IPM Registry REST API. The only known implementation [intersystems-community/zpm-registry](https://github.com/intersystems-community/zpm-registry) runs on IRIS.
+* filesystem
+  * A directory hierarchy available for the client. This could be e.g. a network file share or a cloned git repository.
+
+There is three kinds of _remote_ registries:
+* InterSystems IPM Registry
+  * All packages are verified and approved by InterSystems.
+  * One needs to be InterSystems' customer to get access.
+  * User interface frontend: https://pm.intersystems.com
+  * You probably don't need this but just use Community IPM Registry.
+* Community IPM Registry
+  * This is _the_ registry of InterSystems software ecosystem.
+  * Hosted by InterSystems at https://pm.community.intersystems.com
+  * User interface frontend: https://openexchange.intersystems.com/ (covers also other sources of code than just the IPM modules).
+* Self-hosted IPM Registry
+  * A.k.a. private/local, i.e. your own, IPM registry, hosted by you on your favorite IRIS server.
+  * You need this only if you can't have direct access to Community IPM Registry (see _Proxy_ below) or you have private modules you'd like to share only privately.
 
 ## Proxy
 
-`<INSTALL_DIR>/zpm-registry.yaml`:
+How to use self-hosted registry as a (white-listed) Community registry proxy.
+
+File `<INSTALL_DIR>/zpm-registry.yaml`:
 ```yaml
 uplinks:
   pm:
@@ -75,6 +91,7 @@ uplinks:
 where `<INSTALL_DIR>` could be e.g. `/usr/irissys`.
 
 ## Registry REST API
+
 ```
 curl https://pm.community.intersystems.com/
 curl https://pm.community.intersystems.com/_ping
@@ -82,16 +99,16 @@ curl https://pm.community.intersystems.com/_spec
 curl https://pm.community.intersystems.com/packages/-/all
 ```
 
-## Install Local Registry
+## How to Install Self-Hosted Remote Registry Server
 
 * Developer Community:
   * [Setting Up Your Own InterSystems ObjectScript Package Manager Registry](https://community.intersystems.com/node/473661)
 
-Note the ports in my setup:
+Note the ports in my Docker setup:
 * `52773` - used inside the container (i.e. in package manager shell)
 * `52774` - exposed outside the container
 
-Install the registry locally:
+The remote registry server is implemented as an IPM module and can be installed locally with IPM client:
 ```
 zpm:IPMTEST1>install zpm-registry
 ```
@@ -106,13 +123,48 @@ drwxrwxr-x 3 irisowner irisowner 4096 Oct 28 12:26 yaml-utils/
 drwxrwxr-x 3 irisowner irisowner 4096 Oct 28 12:26 zpm-registry/
 ```
 
+## Configure Self-Hosted Remote Registry
+
+The server is a standard [%CSP.REST](https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25CSP.REST) web application with `/registry` basepath.
+
+By default the web application has both _Unauthenticated_ and _Password_ authentication methods enabled.
+
+However publishing always requires authentication (the registry server code has explicit check for that).
+
+Create new (system) user with _password_ that will be used when publishing modules to the registry:
+```
+Management Portal
+> System Administration
+ > Security
+  > Users
+   > Button: Create New User
+```
+
+No other user details are needed.
+
+Configure new _remote_ registry (named _local_) with the user just created above for the IRIS instance:
+```
+zpm:IPMTEST1>repo -name local -remote -publish 1 -url http://localhost:52773/registry/ -username <USERNAME> -password <PASSWORD>
+```
+
+### Self-Hosted Remote Registry REST API Example
+
+Note the authentication is optional for all other operations except publishing.
+
+Note this example uses a special path `/package` that requires no authentication.
+
 Publish a (random GitHub) package:
 ```bash
-curl -i -X POST -H 'Content-Type:application/json' -d '{"repository":"https://github.com/psteiwer/ObjectScript-Math"}' http://localhost:52774/registry/package
+curl http://localhost:52774/registry/package \
+ --user <USERNAME>:<PASSWORD> --basic \
+ -i -X POST -H 'Content-Type:application/json' -d '{"repository":"https://github.com/psteiwer/ObjectScript-Math"}'
 ```
+
 List registry packages:
-```
-$ curl http://localhost:52774/registry/packages/-/all | jq '.'
+```bash
+curl http://localhost:52774/registry/packages/-/all \
+ --user <USERNAME>:<PASSWORD> --basic \
+ | jq '.'
 ```
 ```json
 [
@@ -129,15 +181,22 @@ $ curl http://localhost:52774/registry/packages/-/all | jq '.'
 ]
 ```
 
-Configure new _remote_ repository (named local) to be used in the namespace:
-```
-zpm:IPMTEST1>repo -name local -remote -publish 1 -url http://localhost:52773/registry/
-```
+## Configure Filesystem Registry
 
-Configure new _file system_ repository (named localfs) to be used in the namespace:
+This doesn't need the registry server at all (the filesystem is the server).
+
+Configure new _filesystem_ registry (named _localfs_) for the IRIS instance:
 ```
 zpm:IPMTEST1>repo -name localfs -filesystem -depth 1 -path /home/irisowner/work/objectscript-ex/ipm/
 ```
+
+The above only supports one version (the latest) of any module (to keep this example simple). If you want to have multiple versions the modules (as you should) you have to add one extra level to the directory hierarchy:
+
+```
+<PATH>/<MODULE_NAME>/<MODULE_VERSION>/
+```
+
+and use `-depth 2` option.
 
 ## How to Write a Module
 
@@ -151,6 +210,49 @@ zpm:IPMTEST1>repo -name localfs -filesystem -depth 1 -path /home/irisowner/work/
 * Templates
   * https://github.com/intersystems-community/objectscript-package-template
   * https://github.com/intersystems-community/intersystems-iris-dev-template
+
+### How to Create a Module
+
+A module is nothing but a simple predefined directory hierarchy and a (IPM manifest) (`module.xml`) file in the top level. Here is an example of a simple `hello` module:
+```
+$ tree
+.
+├── hello
+    ├── module.xml
+    └── src
+        └── OSEX
+            └── ipm
+                └── hello
+                    └── Hello.cls
+```
+
+Load module from filesystem during development with `load` command:
+```
+zpm:IPMTEST1>list-installed -tree
+zpm-registry 1.3.2
+└──yaml-utils 0.1.4
+
+zpm:IPMTEST1>load /home/irisowner/work/objectscript-ex/ipm/hello
+
+[IPMTEST1|osex-ipm-hello]       Reload START (/home/irisowner/work/objectscript-ex/ipm/hello/)
+[IPMTEST1|osex-ipm-hello]       Reload SUCCESS
+[osex-ipm-hello]        Module object refreshed.
+[IPMTEST1|osex-ipm-hello]       Validate START
+[IPMTEST1|osex-ipm-hello]       Validate SUCCESS
+[IPMTEST1|osex-ipm-hello]       Compile START
+[IPMTEST1|osex-ipm-hello]       Compile SUCCESS
+[IPMTEST1|osex-ipm-hello]       Activate START
+[IPMTEST1|osex-ipm-hello]       Configure START
+[IPMTEST1|osex-ipm-hello]       Configure SUCCESS
+[IPMTEST1|osex-ipm-hello]       Activate SUCCESS
+
+zpm:IPMTEST1>list-installed -tree
+osex-ipm-hello 1.0.0
+zpm-registry 1.3.2
+└──yaml-utils 0.1.4
+
+zpm:IPMTEST1>
+```
 
 ### Manifest File (`module.xml`) Creation Helpers
 
@@ -185,47 +287,15 @@ zpm:IPMTEST1>generate -t /home/irisowner/work/foo2
 
 I don't show the export option (`generate -export`) as it is not the workflow I prefer.
 
-### How to Create a Module
+## Publishing to Self-Hosted Remote Registry
 
-A module is nothing but predefined simple directory hierarchy and a (IPM manifest) (`module.xml`)  file in the top level. Here is an example of a simple `hello` module:
+Only one _remote_ registry can have publish attribute enabled. Run `repo -list` command and check `Deployment Enabled?` attribute.
+
+You need to have the module loaded in the namespace (see above the use of `load` command).
+
+Publish module to the "current" remote registry:
 ```
-$ tree
-.
-├── hello
-    ├── module.xml
-    └── src
-        └── OSEX
-            └── ipm
-                └── hello
-                    └── Hello.cls
-```
-
-Load module from filesystem during development:
-```
-zpm:IPMTEST1>list-installed -tree
-zpm-registry 1.3.2
-└──yaml-utils 0.1.4
-
-zpm:IPMTEST1>load /home/irisowner/work/objectscript-ex/ipm/hello
-
-[IPMTEST1|osex-ipm-hello]       Reload START (/home/irisowner/work/objectscript-ex/ipm/hello/)
-[IPMTEST1|osex-ipm-hello]       Reload SUCCESS
-[osex-ipm-hello]        Module object refreshed.
-[IPMTEST1|osex-ipm-hello]       Validate START
-[IPMTEST1|osex-ipm-hello]       Validate SUCCESS
-[IPMTEST1|osex-ipm-hello]       Compile START
-[IPMTEST1|osex-ipm-hello]       Compile SUCCESS
-[IPMTEST1|osex-ipm-hello]       Activate START
-[IPMTEST1|osex-ipm-hello]       Configure START
-[IPMTEST1|osex-ipm-hello]       Configure SUCCESS
-[IPMTEST1|osex-ipm-hello]       Activate SUCCESS
-
-zpm:IPMTEST1>list-installed -tree
-osex-ipm-hello 1.0.0
-zpm-registry 1.3.2
-└──yaml-utils 0.1.4
-
-zpm:IPMTEST1>
+zpm:IPMTEST1>publish -verbose osex-ipm-hello
 ```
 
 ### Demo
@@ -245,6 +315,7 @@ Exporting global: ^OSEX.ipm.demo
 Export finished successfully.
 ```
 
+Later the file can be modified.
 ```
 $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
 ```
@@ -263,10 +334,6 @@ $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
 </Export>
 ```
 
-Only one _remote_ repo in the namespace can have publish attribute enabled. Currently the publish fails because missing authentication.
-
-But _file system_ repository works fine.
-
 Install:
 ```
 zpm:IPMTEST1>install osex-ipm-demo
@@ -275,7 +342,10 @@ Configuration:
 ```
 zpm:IPMTEST1>exec zw ^OSEX.ipm.demo
 
+^OSEX.ipm.demo("settings","bar")="bar value from example.json"
 ^OSEX.ipm.demo("settings","defaultName")="Joe Black"
+^OSEX.ipm.demo("settings","foo")="from manifest Resource attribute"
+^OSEX.ipm.demo("settings","installDir")="/usr/irissys"
 ^OSEX.ipm.demo("settings","numberGenerator")="OSEX.ipm.numbers.Fibonacci"
 ```
 Usage:
