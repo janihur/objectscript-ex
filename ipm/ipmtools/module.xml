@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="osex-ipm-ipmtools.ZPM">
+    <Module>
+      <Name>osex-ipm-ipmtools</Name>
+      <Version>1.0.0</Version>
+      <Description>Custom IPM tooling like resource processors.</Description>
+      <Author>
+        <Person>Jani Hur</Person>
+        <Organization>metsankulma.net</Organization>
+        <CopyrightDate>2024</CopyrightDate>
+        <License>MIT</License>
+      </Author>
+      <Packaging>module</Packaging>
+      <SourcesRoot>src</SourcesRoot>
+      <Resource Name="OSEX.ipm.ipmtools.PKG"/>
+    </Module>
+  </Document>
+</Export>

@@ -3,7 +3,7 @@
   <Document name="osex-ipm-demo.ZPM">
     <Module>
       <Name>osex-ipm-demo</Name>
-      <Version>1.0.0</Version>
+      <Version>1.0.1</Version>
       <Description>A simple demo application illustrating IPM functionality.</Description>
       <Author>
         <Person>Jani Hur</Person>
@@ -21,12 +21,16 @@
           <Name>osex-ipm-numbers</Name>
           <Version>1.*</Version>
         </ModuleReference>
+        <ModuleReference>
+          <Name>osex-ipm-ipmtools</Name>
+          <Version>1.*</Version>
+        </ModuleReference>
       </Dependencies>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="OSEX.ipm.demo.PKG"/>
       <Resource Name="OSEX.ipm.demo.GBL"/>
       <!-- a custom resource processor example for a json file -->
-      <Resource Name="example.json" ProcessorClass="OSEX.ipm.demo.IpmResourceProcessor" Foo="from manifest Resource attribute" Bar="from manifest Resource attribute"/>
+      <Resource Name="example.json" ProcessorClass="OSEX.ipm.ipmtools.CustomResourceProcessor" Foo="from manifest Resource attribute" Bar="from manifest Resource attribute"/>
       <!-- executed in default phase -->
       <Invoke Class="OSEX.ipm.demo.Main" Method="SetDefaultName">
         <Arg>Joe Black</Arg>

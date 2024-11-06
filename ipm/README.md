@@ -203,13 +203,50 @@ Configure new _filesystem_ registry (named _localfs_) for the IRIS instance:
 zpm:IPMTEST1>repo -name localfs -filesystem -depth 1 -path /home/irisowner/work/objectscript-ex/ipm/
 ```
 
-The above only supports one version (the latest) of any module (to keep this example simple). If you want to have multiple versions the modules (as you should) you have to add one extra level to the directory hierarchy:
+The above only supports one version (the latest) of any module (to keep this example simple). If you want to have multiple versions of the modules (as you should) you have to add one extra level to the directory hierarchy:
 
 ```
 <PATH>/<MODULE_NAME>/<MODULE_VERSION>/
 ```
 
 and use `-depth 2` option.
+
+Example:
+```
+zpm:IPMTEST1>repo -list
+
+
+localfs
+        Source:                 /home/irisowner/work/fs-registry/*/*/module.xml
+        Enabled?                Yes
+        Available?              Yes
+        Use for Snapshots?      Yes
+        Use for Prereleases?    Yes
+        Is Read-Only?           No
+```
+```
+$ tree -L 3 fs-registry/
+fs-registry/
+├── osex-ipm-demo
+│   ├── 1.0.0
+│   │   ├── module.xml
+│   │   └── src
+│   └── 1.0.1
+│       ├── module.xml
+│       └── src
+├── osex-ipm-hello
+│   └── 1.0.0
+│       ├── module.xml
+│       └── src
+├── osex-ipm-ipmtools
+│   └── 1.0.0
+│       ├── module.xml
+│       └── src
+└── osex-ipm-numbers
+    └── 1.0.0
+        ├── module.xml
+        └── src
+```
 
 ## How to Write a Module
 
@@ -300,26 +337,23 @@ zpm:IPMTEST1>generate -t /home/irisowner/work/foo2
 
 I don't show the export option (`generate -export`) as it is not the workflow I prefer.
 
-### Publishing to Self-Hosted Remote Registry
+### Unit Tests
 
-Only one _remote_ registry can have publish attribute enabled. Run `repo -list` command and check `Deployment Enabled?` attribute.
+The use of unit tests is not demonstrated here as I'm not using the standard `%UnitTest` framework yet.
 
-You need to have the module loaded in the namespace (see above the use of `load` command).
+### Customizing Module Lifecycle
 
-Publish module to the "current" remote registry:
-```
-zpm:IPMTEST1>publish -verbose osex-ipm-hello
-```
+Use `<Invoke>` to run arbitrary class methods in any lifecycle phase.
 
-### Demo
+Use custom resource processor to have a total control over the resource (`<Resource>` tag) lifecycle.
 
-An application `OSEX.ipm.demo` module that uses two library modules:
-* `OSEX.ipm.hello`
-* `OSEX.ipm.numbers`
+`demo` module has examples of both.
 
-Application uses global `^OSEX.ipm.demo` for installation and run time configuration.
+### Globals
 
-How to export global definition (just to get the right file format):
+Globals are a bit outlier at the moment and should be explicitly removed during uninstall (use e.g. `<Invoke>`).
+
+If you're not comfortable of the global XML format just create the global and export it to a file. The file can be saved into module's version control and modified at will:
 ```
 IPMTEST1>do $system.OBJ.Export("OSEX.ipm.demo.GBL","OSEX.ipm.demo.GBL")
 
@@ -327,8 +361,6 @@ Exporting to XML started on 10/29/2024 18:20:39
 Exporting global: ^OSEX.ipm.demo
 Export finished successfully.
 ```
-
-Later the file can be modified.
 ```
 $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
 ```
@@ -346,6 +378,26 @@ $ cat /iris/databases/IPMTEST1DB/OSEX.ipm.demo.GBL
 </Global>
 </Export>
 ```
+
+### Publishing to Self-Hosted Remote Registry
+
+Only one _remote_ registry can have publish attribute enabled. Run `repo -list` command and check `Deployment Enabled?` attribute.
+
+You need to have the module loaded in the namespace (see above the use of `load` command).
+
+Publish module to the "current" remote registry:
+```
+zpm:IPMTEST1>publish -verbose osex-ipm-hello
+```
+
+## Demo
+
+An application `OSEX.ipm.demo` module that uses three library modules:
+* `OSEX.ipm.hello`
+* `OSEX.ipm.ipmtools` (custom resource processor)
+* `OSEX.ipm.numbers`
+
+Application uses global `^OSEX.ipm.demo` for installation and run time configuration.
 
 Install:
 ```

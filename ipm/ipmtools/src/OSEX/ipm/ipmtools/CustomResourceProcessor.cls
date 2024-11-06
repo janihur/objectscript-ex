@@ -1,5 +1,7 @@
 /// <p>IPM Resource Processor example. Note IPM version 0.7 compatible only.</p>
-Class OSEX.ipm.demo.IpmResourceProcessor Extends %ZPM.PackageManager.Developer.Processor.Abstract
+/// <p>Prints trace of all phases the framework calls the processor and reads
+/// the resource (that is expected to be a json file) in Configure phase.</p>
+Class OSEX.ipm.ipmtools.CustomResourceProcessor Extends %ZPM.PackageManager.Developer.Processor.Abstract
 {
 
 Parameter DESCRIPTION As STRING = "A dummy IPM resource processor example.";
