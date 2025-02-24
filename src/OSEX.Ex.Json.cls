@@ -86,4 +86,15 @@ ClassMethod Ex4()
 	}
 }
 
+ClassMethod Ex5()
+{
+	// escapes:
+	// \X -> \\X
+	// " -> \"
+	// a\Xb"c -> a\\Xb\"c
+	set json = { "foo": "a\\Xb\"c" }
+	zwrite json
+	write json.foo,!
+}
+
 }
