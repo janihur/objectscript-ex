@@ -9,9 +9,9 @@ Class OSEX.Json.Compare
 /// <p>Subset rules:</p>
 /// <ul>
 /// <li>Each name in <code>json2</code> must exist in <code>json1</code>.</li>
-/// <li>Each value in <code>json2</code> must be equal to the corresponding value in <code>json1</code>.</li>
+/// <li>Each value (and it's type) in <code>json2</code> must be equal to the corresponding value (and it's type)in <code>json1</code>.</li>
 /// <li>Each object in <code>json2</code> must be a subset of the corresponding object in <code>json1</code>.</li>
-/// <li>For arrays the values in <code>json2</code> must be the first values in <code>json1</code> and the order have to be the same. It doesn't matter if <code>json1</code> has extra values.</li>
+/// <li>For arrays the values in <code>json2</code> must be the first values in <code>json1</code> and the order have to be the same. It doesn't matter if <code>json1</code> has extra values. The types of the values have to be the same too.</li>
 /// <li>The order of names doesn't matter, but the order of array values does matter.</li>
 /// </ul>
 ClassMethod IsSubset(
@@ -186,6 +186,15 @@ ClassMethod "Test: Valid JSON"()
 				"IsEqual": 0
 			}
 		},
+		{
+			"name": "Object with different values: array vs. object",
+			"json1": {"a":1},
+			"json2": {"a":{"b":1}},
+			"expected": {
+				"IsSubset": 0,
+				"IsEqual": 0
+			}
+		},
 		// top level array ----------------------------------------------------
 		{
 			"name": "Empty arrays",
@@ -301,7 +310,7 @@ ClassMethod "Test: Valid JSON"()
 ClassMethod "Test: Invalid JSON"()
 {
 	write "--- Invalid JSON",!
-	
+
 	set description = "Test #1 Null OREF #1"
 	write description,!
 	set json1 = ""
@@ -334,7 +343,7 @@ ClassMethod "Test: Invalid JSON"()
 
 	// ------------------------------------------------------------------------
 
-	set description = "Test #3 Random Object #1"
+	set description = "Test #3 Random object #1"
 	write description,!
 	set json1 = {"a":1}
 	set json2 = ##class(%ListOfDataTypes).%New()
@@ -350,7 +359,7 @@ ClassMethod "Test: Invalid JSON"()
 
 	// ------------------------------------------------------------------------
 
-	set description = "Test #4 Random Object #2"
+	set description = "Test #4 Random object #2"
 	write description,!
 	set json1 = ##class(%ListOfDataTypes).%New()
 	set json2 = {"a":1}
@@ -363,6 +372,38 @@ ClassMethod "Test: Invalid JSON"()
 	} catch (ex) {}
 	do ..AssertEqual($isobject(ex), 1, description_": IsEqual()")
 	do ..AssertEqual(ex.Name, "<METHOD DOES NOT EXIST>", description_": IsEqual()")
+
+	// ------------------------------------------------------------------------
+
+	set description = "Test #5 Non-object value #1"
+	write description,!
+	set json1 = 1
+	set json2 = {"a":1}
+
+	do ..AssertEqual(..IsSubset(json1, json2), 0, description_": IsSubset()")
+
+	set ex = $$$NULLOREF
+	try {
+		do ..IsEqual(json1, json2)
+	} catch (ex) {}
+	do ..AssertEqual($isobject(ex), 1, description_": IsEqual()")
+	do ..AssertEqual(ex.Name, "<INVALID OREF>", description_": IsEqual()")
+
+	// ------------------------------------------------------------------------
+
+	set description = "Test #6 Non-object value #2"
+	write description,!
+	set json1 = {"a":1}
+	set json2 = 1
+
+	do ..AssertEqual(..IsSubset(json1, json2), 0, description_": IsSubset()")
+
+	set ex = $$$NULLOREF
+	try {
+		do ..IsEqual(json1, json2)
+	} catch (ex) {}
+	do ..AssertEqual($isobject(ex), 1, description_": IsEqual()")
+	do ..AssertEqual(ex.Name, "<INVALID OREF>", description_": IsEqual()")
 }
 
 ClassMethod AssertEqual(
