@@ -4,6 +4,11 @@ InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScri
 
 See [doc/](doc/) directory for random notes about the language and the platform.
 
+## TODO
+
+* Add ObjectScript Quality [scan](https://community.intersystems.com/node/488951). It's free for open source projects.
+* Check I'm conforming IPM source code [naming rules](https://community.intersystems.com/post/objectscript-package-manager-naming-convention#comment-182406) here.
+
 ## `ipm` Directory
 
 InterSystems Package Manager (IPM) examples. See [README.md](ipm/README.md) for the details.

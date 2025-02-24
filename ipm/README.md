@@ -1,6 +1,6 @@
 # InterSystems Package Manager (IPM)
 
-This is based on 0.7, but [0.9 is out soon](https://community.intersystems.com/node/576406). Switch to 0.9 asap.
+This is specific for v0.9.
 
 The documentation:
 * [ipm/README.md](https://github.com/intersystems/ipm/blob/master/README.md)
@@ -15,20 +15,24 @@ Worth checking later:
 
 ### Installation
 
+IPM supports two different installation patterns:
+* Install a version in one namespace (`%SYS`) and then map this version in to any other namespace. This way all the namespaces in an IRIS instance share the same IPM version.
+* Install a version in the namespace. This way the different namespaces can have different versions.
+
+These patterns can be mixed in the same IRIS instance, but it's probably not a good idea.
+
 Download the client installation package:
 ```bash
 curl -LO \
-https://github.com/intersystems/ipm/releases/download/v0.7.3/zpm-0.7.3.xml
+https://github.com/intersystems/ipm/releases/download/v0.9.1/zpm-0.9.1.xml
 ```
-(0.7.3 is the latest version at the moment of writing.)
+(0.9.1 is the latest version at the moment of writing.)
 
-Import in any namespace:
+Import the IPM in the namespace where it will be used (see the patterns above):
 ```
-NAMESPACE>do $system.OBJ.Load("/<PATH>/zpm-0.7.3.xml","ck",.errorlog)
+NAMESPACE>do $system.OBJ.Load("/<PATH>/zpm-0.9.1.xml","ck",.errorlog)
 NAMESPACE>zwrite errorlog
 ```
-
-The tool will install itself into `%SYS` namespace and will be available for all namespaces in the instance.
 
 ### Usage
 
@@ -37,14 +41,14 @@ Start the package manager shell:
 IPMTEST1>zpm
 
 =============================================================================
-|| Welcome to the Package Manager Shell (ZPM). version 0.7.3               ||
+|| Welcome to the Package Manager Shell (ZPM). version                     ||
 || Enter q/quit to exit the shell. Enter ?/help to view available commands ||
-|| Current registry https://pm.community.intersystems.com                  ||
+|| Current registry                                                        ||
 =============================================================================
 zpm:IPMTEST1>
 ```
 
-By default the InterSystems hosted Community registry (https://pm.community.intersystems.com) is used.
+By default no registries are available. The InterSystems hosted Community registry (https://pm.community.intersystems.com) can be enabled by IPM command `repo -reset-defaults`.
 
 Useful commands:
 * `help`
