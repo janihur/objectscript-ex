@@ -46,6 +46,12 @@ ClassMethod ex2Impl(dateTimeStr As %String)
 	write "is daylight saving time: ",$system.Util.IsDST($zdatetimeh(dateTimeStr,3)),!
 }
 
+/// <p>Return current local date and time in ISO 8601 format (3).</p>
+ClassMethod Now() As %String
+{
+	return $zdatetime($horolog,3)
+}
+
 /// is valid ISO 8601 UTC date time string without time zone offset
 /// accepts also only date or time strings
 /// not a bullet proof (yet)
