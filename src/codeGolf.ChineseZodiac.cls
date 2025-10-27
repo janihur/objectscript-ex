@@ -36,4 +36,3 @@ ClassMethod Calendar(y As %Integer) As %String
 }
 
 }
-

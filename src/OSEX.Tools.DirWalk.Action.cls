@@ -4,7 +4,9 @@ Class OSEX.Tools.DirWalk.Action Extends %RegisteredObject
 
 Property files [ MultiDimensional, Private ];
 
-Method Action(name As %String, type As %String)
+Method Action(
+	name As %String,
+	type As %String)
 {
     if (type = "F") {
         set ..files(name) = ""

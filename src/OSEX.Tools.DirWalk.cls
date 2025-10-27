@@ -8,7 +8,11 @@ Class OSEX.Tools.DirWalk
 /// path is the directory to start the walk
 /// wildcards is a list of string wildcards to match files. different wildcards are separated by ";"
 /// recursive is a boolean to indicate if the walk should be recursive
-ClassMethod Walk(ByRef action As %RegisteredObject, path As %String, wildcards As %String = "", recursive As %Boolean = {$$$FALSE})
+ClassMethod Walk(
+	ByRef action As %RegisteredObject,
+	path As %String,
+	wildcards As %String = "",
+	recursive As %Boolean = {$$$FALSE})
 {
   set stmt = ##class(%SQL.Statement).%New()
 
