@@ -6,6 +6,7 @@
 
 |Operation|Command|Details|
 |---------|-------|-------|
+|Name     |`set name = ##class(Ens.Director).GetActiveProductionName()`|Not documented, see the source code.|
 |Status   |`do ##class(Ens.Director).GetProductionStatus(.name,.state)`||
 |Start    |`do ##class(Ens.Director).StartProduction("OSEX.IOP.Production")`||
 |Stop     |`do ##class(Ens.Director).StopProduction("OSEX.IOP.Production")`||
@@ -57,3 +58,45 @@ where ID = 82
 ```
 
 TODO: the idea above should be encapsulated into a proper ObjectScript API.
+
+## IOP Production Extra Properties Example
+
+Production class: [OSEX.IOP.Production.ExtraProperties](../src/OSEX.IOP.Production.ExtraProperties.cls)
+
+Set [System Default Settings](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG_other_default_settings):
+```
+Home > Interoperability > Configure > System Default Settings
+  > New
+    > Production: *
+      Item Name: *
+      Host Class Name: *
+      Setting Name: Bar
+      Setting Value: From System Default Setting
+  > Save
+
+Read settings programmatically:
+```
+// current production
+zw ##class(Ens.Production).GetSettingsArray(.settings)  zw settings
+zw ##class(Ens.Production).GetSettingValue("Bar")
+
+zw ##class(Ens.Director).GetProductionSettings("",.settings)  zw settings
+zw ##class(Ens.Director).GetProductionSettingValue("","Bar",.status)  zw status
+```
+
+Set settings programmatically:
+```
+set prodname = "OSEX.IOP.Production.ExtraProperties"
+set prodconf = ##class(Ens.Config.Production).%OpenId(prodname,,.status)  zw status
+// this is important!
+zw prodconf.PopulateVirtualSettings()
+
+set newvalue = ##class(Ens.Config.Setting).%New()
+set newvalue.Name = "Foo"
+set newvalue.Value = "VALUE1"
+zw prodconf.Settings.SetAt(newvalue,1)
+
+zw prodconf.%Save()
+```
+
+`prodconf.Settings` is `%Collection.ListOfObj` of `Ens.Config.Setting` objects. See [Working with Collection Classes](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_propcoll). See [`OSEX.IOP.Production.ExtraProperties.Tools`](../src/OSEX.IOP.Production.ExtraProperties.Tools.cls) for complete example.
