@@ -1,7 +1,60 @@
 Include OSEX
 
+/// <p>ObjectScript documentation:</p>
+/// <ul>
+/// <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fzdatetime">$zdatetime</a></li>
+/// <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fzdatetimeh">$zdatetimeh</a></li>
+/// </ul>
 Class OSEX.Time Extends %RegisteredObject
 {
+
+/// <p>Date format</p>
+/// <p>"YYYY-MM-DD" (ODBC format)</p>
+Parameter DFORMAT = 3;
+
+/// <p>Time format</p>
+/// <p>"hh:mm:ss" (24-hour clock)</p>
+Parameter TFORMAT = 1;
+
+/// <p>An integer value that specifies the number of decimal places of fractional seconds precision used to express the time.</p>
+Parameter PRECISION = 3;
+
+/// <p>Do the local time to/from UTC conversion.</p>
+Parameter CONVERSION = -3;
+
+ClassMethod CurrentLocalTime() As %TimeStamp
+{
+	return $zdatetime($horolog, ..#DFORMAT, ..#TFORMAT, ..#PRECISION)
+}
+
+ClassMethod CurrentUtcTime() As %TimeStamp
+{
+	return $zdatetime($ztimestamp, ..#DFORMAT, ..#TFORMAT, ..#PRECISION)
+}
+
+ClassMethod LocalToUtc(ts As %TimeStamp) As %TimeStamp
+{
+	return $zdatetime(
+		$zdatetime(
+			$zdatetimeh(ts, ..#DFORMAT, ..#TFORMAT),
+			..#CONVERSION),
+		..#DFORMAT,
+		..#TFORMAT,
+		..#PRECISION
+	)
+}
+
+ClassMethod UtcToLocal(ts As %TimeStamp) As %TimeStamp
+{
+	return $zdatetime(
+		$zdatetimeh(
+			$zdatetimeh(ts, ..#DFORMAT, ..#TFORMAT),
+			..#CONVERSION),
+		..#DFORMAT,
+		..#TFORMAT,
+		..#PRECISION
+	)
+}
 
 ClassMethod Ex1()
 {
