@@ -4,6 +4,8 @@ InterSystems [IRIS](https://www.intersystems.com/data-platform/) and [ObjectScri
 
 See [doc/](doc/) directory for random notes about the language and the platform.
 
+[docker/](docker/) directory contains Docker compose file to run InterSystems IRIS Community Edition.
+
 ## TODO
 
 * Add ObjectScript Quality [scan](https://community.intersystems.com/node/488951). It's free for open source projects.
