@@ -1,4 +1,26 @@
 {
+    "intersystems.servers": {
+        "iris1": {
+            "webServer": {
+                "scheme": "http",
+                "host": "localhost",
+                "port": 52774
+            },
+            "description": "Local IRIS on port 52774",
+            "username": "_SYSTEM",
+            "password": "SYS"
+        },
+        "iris2": {
+            "webServer": {
+                "scheme": "http",
+                "host": "localhost",
+                "port": 52776
+            },
+            "description": "Local IRIS on port 52776",
+            "username": "_SYSTEM",
+            "password": "SYS"
+        },
+    },
     // https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_settings
     "intersystems.language-server.diagnostics.routines": true,
     "intersystems.language-server.formatting.commands.case": "lower",
@@ -11,9 +33,18 @@
     // u - Update only. Skip compilation of classes that are already up-to-date.
     // TODO: replace flags (deprecated) with qualifiers
     "objectscript.compileFlags": "bckru",
-    "objectscript.conn": {
-        "active": true
-    },
     "objectscript.multilineMethodArgs": true,
     "objectscript.overwriteServerChanges": true,
+    // Language specific editor settings
+    "[objectscript-class]": {
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4
+    },
+    "objectscript.conn": {
+        "active": false,
+        "server": "iris2",
+        "ns": "USER"
+    },
 }
