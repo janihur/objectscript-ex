@@ -5,7 +5,7 @@ Include OSEX
 /// <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fzdatetime">$zdatetime</a></li>
 /// <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fzdatetimeh">$zdatetimeh</a></li>
 /// </ul>
-Class OSEX.Time Extends %RegisteredObject
+Class OSEX.Time
 {
 
 /// <p>Date format</p>
@@ -62,9 +62,9 @@ ClassMethod Ex1()
 	#dim nowDate = $piece(nowDateTime,",",1)
 	#dim nowTime = $piece(nowDateTime,",",2)
 	
-	zw nowDateTime
-	zw nowDate
-	zw nowTime
+	zwrite nowDateTime
+	zwrite nowDate
+	zwrite nowTime
 	
 	// format 3 is ISO
 	// there is more formats but here we just use the first ones
@@ -92,7 +92,7 @@ ClassMethod Ex2()
 ClassMethod ex2Impl(dateTimeStr As %String)
 {
 	write "---",!
-	zw dateTimeStr
+	zwrite dateTimeStr
 	write "horolog full: ",$zdatetimeh(dateTimeStr,3),!
 	write "horolog date: ",$zdateh(dateTimeStr,3),!
 	write "horolog time: ",$ztimeh($piece(dateTimeStr," ",2)),!

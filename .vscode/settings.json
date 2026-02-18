@@ -20,11 +20,23 @@
             "username": "_SYSTEM",
             "password": "SYS"
         },
+        "iris3": {
+            "webServer": {
+                "scheme": "http",
+                "host": "localhost",
+                "port": 52777
+            },
+            "description": "Local IRIS on port 52777",
+            "username": "_SYSTEM",
+            "password": "SYS"
+        },
     },
     // https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_settings
     "intersystems.language-server.diagnostics.routines": true,
     "intersystems.language-server.formatting.commands.case": "lower",
+    "intersystems.language-server.formatting.commands.length": "long",
     "intersystems.language-server.formatting.system.case": "lower",
+    "intersystems.language-server.formatting.system.length": "long",
     // https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RCOS_vsystem_flags_qualifiers
     // b - Includes subclasses and classes that reference the current class in SQL usage.
     // c - Compiles the class definitions after loading.
@@ -43,8 +55,8 @@
         "editor.tabSize": 4
     },
     "objectscript.conn": {
-        "active": false,
-        "server": "iris2",
-        "ns": "USER"
+        "active": true,
+        "server": "iris3",
+        "ns": "OSEX"
     },
 }

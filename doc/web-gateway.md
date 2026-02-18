@@ -11,9 +11,13 @@ In practice Web Gateway is Apache Http Server module that acts as a gateway betw
 
 ## Web Gateway Docker Image
 
-This is the recommended option. Details still TODO.
+This is the recommended option. See [Web Access Using the Web Gateway Container](https://docs.intersystems.com/iris20251/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK#ADOCK_iris_webgateway) and [Web Gateway Examples](https://github.com/intersystems-community/webgateway-examples) for simple Docker Compose setup that is good enough when you run IRIS locally. The example uses Web Gateway Docker image with Apache Http Server.
 
-* [Web Gateway Examples](https://github.com/intersystems-community/webgateway-examples)
+My modifications to the example `CSP.ini` configuration:
+* Remove all SSL configuration.
+* Update `[LOCAL].Ip_Address` to match the IRIS container hostname.
+
+Other examples:
 * [Apache Web Gateway with Docker](https://community.intersystems.com/node/516661)
 * [IRIS Web Gateway Example](https://github.com/caretdev/iris-webgateway-example)
 
